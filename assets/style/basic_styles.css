@@ -6,4 +6,26 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    
+    max-width: 1280px;
+    margin: auto;
+
+    /** defining font features **/
+    font-size: 16px;
+    font-family: BYekan,'BYekan',tahoma;
+    text-align: right;
+
+    /** defining flex flow for body parts in top to bottom direction**/
+    display: flex;
+    flex-direction: column;
+}
+
+.menu {
+    background-color: rgba(255, 255, 255, 1);
+    height: 65px;
+    
+    /** defining flex flow for container parts in right to left direction and set gap between columns **/
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 2vh;
 }
