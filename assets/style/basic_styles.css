@@ -1,5 +1,12 @@
-/** basic style formats of body section **/
+/** defining shared features **/
+* {
+    /** defining font features **/
+    font-size: 16px;
+    font-family: BYekan,'BYekan',tahoma;
+    text-align: right;
+}
 
+/** basic style formats of body section **/
 body {
     background-image: url(../img/background.jpg);
     background-position: center;
@@ -10,11 +17,6 @@ body {
     max-width: 1280px;
     margin: auto;
 
-    /** defining font features **/
-    font-size: 16px;
-    font-family: BYekan,'BYekan',tahoma;
-    text-align: right;
-
     /** defining flex flow for body parts in top to bottom direction**/
     display: flex;
     flex-direction: column;
@@ -24,8 +26,38 @@ body {
     background-color: rgba(255, 255, 255, 1);
     height: 65px;
     
-    /** defining flex flow for container parts in right to left direction and set gap between columns **/
-    display: flex;
-    flex-direction: row-reverse;
-    column-gap: 2vh;
+    /** defining grid display for menu, making a 2 column grid and specifying each part size **/
+    display: grid;
+    grid-template-areas: "L R";
+    grid-template-columns: 20% 80%;
+}
+
+.block--vertically-middle {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.menu > .menu--poisition-right {
+    grid-area: R;
+}
+
+.menu > .menu--poisition-left {
+    grid-area: L;
+}
+
+.menu__item {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.menu__item--size-large {
+    font-size: 120%;
+}
+
+.menu__item--color-turquoise {
+    color: turquoise;
+}
+
+.menu__item:hover {
+    color: turquoise;
 }
