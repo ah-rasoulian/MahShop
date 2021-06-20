@@ -6,6 +6,10 @@
     text-align: right;
 }
 
+html {
+    height: 100%;
+}
+
 /** basic style formats of body section **/
 body {
     background-image: url(../img/background.jpg);
@@ -15,6 +19,7 @@ body {
     background-attachment: fixed;
     
     max-width: 1280px;
+    height: 100%;
     margin: auto;
 
     /** defining flex flow for body parts in top to bottom direction**/
@@ -22,7 +27,7 @@ body {
     flex-direction: column;
 }
 
-.menu {
+#menu {
     background-color: rgba(255, 255, 255, 1);
     height: 65px;
     
@@ -37,11 +42,11 @@ body {
     margin-bottom: auto;
 }
 
-.menu > .menu--poisition-right {
+#menu > .menu--poisition-right {
     grid-area: R;
 }
 
-.menu > .menu--poisition-left {
+#menu > .menu--poisition-left {
     grid-area: L;
 }
 
@@ -60,4 +65,24 @@ body {
 
 .menu__item:hover {
     color: turquoise;
+}
+
+#footer {
+    background-color: rgba(0, 0, 0, 1);
+
+    color: rgb(150, 150, 150);
+    text-align: center;
+    margin-top: auto;
+}
+
+#container {
+    background-color: rgba(255, 255, 255, 0.5);
+    flex-grow: 1;
+}
+
+button {
+    border-radius: 25%;
+    border-color: rgba(250, 185, 35, 1);
+    background-color: inherit;
+    padding: 10px;
 }
