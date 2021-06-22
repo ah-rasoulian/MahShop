@@ -3,7 +3,7 @@
     /** defining font features **/
     font-size: 16px;
     font-family: BYekan,'BYekan',tahoma;
-    text-align: right;
+    text-align: center;
 }
 
 html {
@@ -12,7 +12,7 @@ html {
 
 /** basic style formats of body section **/
 body {
-    background-image: url(../img/background.jpg);
+    background-color: rgb(0, 0, 0);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -30,6 +30,7 @@ body {
 #menu {
     background-color: rgb(255, 255, 255);
     height: 65px;
+    min-height: 65px;
     
     /** defining grid display for menu, making a 2 column grid and specifying each part size **/
     display: flex;
@@ -58,32 +59,28 @@ body {
 }
 
 #footer {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(49, 52, 54);
     height: 65px;
+    min-height: 65px;
 }
 
 #footer > p {
-    color: rgb(150, 150, 150);
-    text-align: center;
+    color: rgb(114, 120, 125);
 }
 
-#container {
-    background-color: rgba(255, 255, 255, 0.5);
-    flex-grow: 1;
+.button {
+    border-radius: 24px;
+    border-color: rgb(255, 200, 10);
+    border-style: solid;
+
+    background-color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    color: rgb(0, 0, 0);
 }
 
 .login__button {
     position: relative;
     z-index: 2;
-
-    border-radius: 24px;
-    border-color: rgb(255, 200, 0);
-    border-style: solid;
-
-    background-color: rgb(255, 255, 255);
-    
-    padding: 10px 20px;
-    color: rgb(0, 0, 0);
 }
 
 .dropdown {
@@ -109,18 +106,18 @@ body {
     padding-top: 25%;
     padding-bottom: 10%;
     
-    background-color: rgb(220, 220, 220);
+    background-color: rgb(225, 225, 225);
     z-index: 1;
 }
 
 .dropdown__content a {
-    color: black;
+    color: rgb(0, 0, 0);
     padding: 12px 16px;
     display: block;
 }
 
 .dropdown__content a:hover {
-    background-color: rgb(230, 230, 230);
+    background-color: rgb(247, 247, 247);
 }
 
 .dropdown:hover .dropdown__content {
