@@ -110,7 +110,24 @@
 }
 
 .filter__classification {
-    
+    box-shadow: 0 0.7em 1.7em -0.4em rgb(0, 0, 0);
+    margin-left: 10px;
+}
+
+.filter__classification > * {
+    text-align: right;
+    padding: 10px;
+}
+
+.filter__classification > h2 {
+    border-bottom: 2px solid rgb(200, 200, 200);
+}
+
+.classification__item {
+    display: flex;
+    flex-direction: row-reverse;
+
+    align-items: center;
 }
 
 .product {
