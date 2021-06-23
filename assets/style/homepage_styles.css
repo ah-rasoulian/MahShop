@@ -25,11 +25,13 @@
     margin-top: 40px;
     background-color: rgb(255, 255, 255);
 
-    width: 50%;
+    width: 60%;
     border-style: none;
     border-radius: 24px;
 
     padding: 10px 20px;
+
+    outline: none;
 }
 
 .search__button {
@@ -73,6 +75,10 @@
     min-width: 100px;
 }
 
+.button--size-small:hover {
+    transform: translateY(-0.25em);
+}
+
 .button__sorting {
     background-color: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
@@ -111,7 +117,10 @@
 
 .filter__classification {
     box-shadow: 0 0.7em 1.7em -0.4em rgb(0, 0, 0);
-    margin-left: 10px;
+    margin-left: 7.5px;
+
+    max-height: 400px;
+    overflow: auto;
 }
 
 .filter__classification > * {
@@ -128,6 +137,7 @@
     flex-direction: row-reverse;
 
     align-items: center;
+    gap: 10px;
 }
 
 .product {
@@ -138,6 +148,7 @@
     display: grid;
     grid-template-areas: 'Pic' 'Name' 'Price';
     grid-template-rows: 40% 50% 10%;
+    grid-template-columns: 100%;
 
     align-items: center;
 
