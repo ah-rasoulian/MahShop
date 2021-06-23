@@ -12,7 +12,7 @@ html {
 
 /** basic style formats of body section **/
 body {
-    background-color: rgb(0, 0, 0);
+    background-image: url("../img/background.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

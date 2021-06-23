@@ -1,5 +1,5 @@
 #container {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgb(200, 200, 200);
     flex-grow: 1;
 
     display: flex;
@@ -43,4 +43,127 @@
 .search__button:hover {
     box-shadow: 0 0.7em 0.7em -0.4em rgb(255, 200, 0);
     transform: translateY(-0.25em);
+}
+
+.container__box {
+    background-color: rgb(255, 255, 255);
+    margin: 7.5px;
+
+    color: rgb(0, 0, 0);
+}
+
+.container__box__sorting {
+    height: 50px;
+    min-height: 50px;
+
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+
+    padding-right: 10px;
+    padding-left: 10px;
+    gap: 5px;
+}
+
+.button--size-small {
+    background-color: rgb(0, 157, 255);
+    color: rgb(255, 255, 255);
+
+    border-radius: 24px;
+    border-style: none;
+    min-width: 100px;
+}
+
+.button__sorting {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
+
+.button__sorting:active {
+    background-color: rgb(0, 157, 255);
+    color: rgb(255, 255, 255);
+}
+
+.container__contents {
+    display: grid;
+    grid-template-areas: 'Products Filters';
+    grid-template-columns: 75% 25%;
+
+    text-align: right;
+}
+
+.container__contents--position-left {
+    grid-area: Products;
+
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.container__contents--position-right {
+    grid-area: Filters;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.filter__classification {
+    
+}
+
+.product {
+    width: 28%;
+    height: 300px;
+
+    padding: 15px;
+
+    display: grid;
+    grid-template-areas: 'Pic' 'Name' 'Price';
+    grid-template-rows: 40% 50% 10%;
+
+    align-items: center;
+
+    box-shadow: 0 0.7em 1.7em -0.4em rgb(0, 0, 0);
+}
+
+.product__pic {
+    height: 150px;
+    width: 150px;
+
+    margin: auto;
+}
+
+.product__name {
+    grid-area: Name;
+}
+
+.product__name > h3 {
+    font-size: 80%;
+    color: rgb(150, 150, 150);
+}
+
+.product__price {
+    position: relative;
+
+    grid-area: Price;
+    
+    display: flex;
+    flex-direction: row-reverse;
+
+    align-items: center;
+}
+
+.product__price > .button--size-small {
+    margin-right: auto;
+
+    box-shadow: 0 0.5em 0.5em -0.4em rgb(0, 157, 255);
+}
+
+.product__price::before {
+    border-top: 2px solid rgb(200, 200, 200);
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
 }
