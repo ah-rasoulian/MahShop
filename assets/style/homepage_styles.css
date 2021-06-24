@@ -1,11 +1,3 @@
-#container {
-    background-color: rgb(200, 200, 200);
-    flex-grow: 1;
-
-    display: flex;
-    flex-direction: column;
-}
-
 .container__hearoheader {
     background-color: rgb(255, 80, 0);
 
