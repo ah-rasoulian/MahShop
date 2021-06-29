@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/
+    ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/style/profile.css">
+    <link rel="stylesheet" href="assets/style/arrow_styles.css">
+    <link rel="stylesheet" href="assets/style/basic_styles.css">
+    <link rel="stylesheet" href="assets/style/homepage_styles.css">
+
+
+    <title>profile</title>
+</head>
+<body>
+
+    <div id="menu" class="block--vertically-middle">
+        <span class="menu__item menu__item--size-large menu__item--color-turquoise">فروشگاه مهشاپ </span>
+        <span class="menu__item">صفحه اول</span>
+        <span class="menu__item">تماس با ما</span>
+        <span class="menu__item">پشتیبانی</span>
+        <span class="menu__item">محصولات</span>
+
+        <div class="menu__item dropdown">
+            <!--
+            <button class="login__button">ورود/ثبت نام</button>
+            -->
+            <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
+            <div class="dropdown__content">
+                <a>پروفایل</a>
+                <a>خروج از حساب</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+
+        <div class="content">
+            <div class="welcom account">
+                <div id="account">
+                    <button>افزایش موجودی</button>
+                    <p> موجودی حساب شما:۱۰/۰۰۰</p>
+                </div>
+                <div class="black"></div>
+                <div id="welcom">
+                    <p>محمدامین عزیز، خوش آمدید</p>
+                </div>
+
+            </div>
+            <div class="receipt">
+                <div class="prof tab selected">پروفایل</div>
+                <div class="rec tab">رسیدها</div>
+            </div>
+            <form action="" class="form">
+                <div class="form-element name_info">
+                    <div id="first_name">
+                        <input type="text" placeholder="نام خود را وارد کنید"  id="fname">
+                        <label for="fname">نام</label>
+                    </div>
+                    <div id="last_name">
+                        <input type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname">
+                        <label for="lname">نام خانوادگی</label>
+                    </div>
+                </div>
+                <div class="form-element email_pass ">
+                    <div id="password">
+                        <input type="password" placeholder="رمز خود را وارد کنید"  id="p_word">
+                        <label for="p_word">رمز عبور</label>
+                    </div>
+                </div>
+                <div class="form_element address" >
+                    <textarea placeholder="آدرس خود را وارد کنید"  id="address"></textarea>
+                    <label for="address">آدرس</label>
+                </div>
+                <button class="btn" type="button" >ثبت نام</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        <p>تمامی حقوق برای توسعه‌دهندگان، امیرحسین رسولیان و محمدامین رحیمی، محفوظ است</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

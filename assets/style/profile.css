@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+* {
+    box-sizing: border-box;
+} 
+
+
+#container {
+    justify-content: center;
+
+} 
+
+.content {
+    max-width: 600px;
+    width: 50%;
+    min-width: 300px;
+    margin: 0 auto;
+}
+
+.welcom.account {
+    margin: 0 auto 30px auto;
+    min-width: 250px;
+    display: grid;
+    grid-template-columns: 49.5% 2px 49.5%;
+}
+
+#account {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    /* justify-items: center;  */
+    align-items: center;
+    margin: auto;
+    height: 40px;
+}
+
+#account p {
+    font-size: 10px;
+    line-height: 13px;
+}
+
+#account button{
+    font-size: 10px;
+    height: 30px;
+    border: none;
+    background-color: orange;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#welcom {
+    font-weight: bold;
+}
+
+.black {
+    background-color: black;
+}
+
+
+
+.receipt {
+    box-sizing: content-box;
+    margin: 0 auto 30px auto;
+    min-width: 200px;
+    width: 300px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background-color: rgb(225, 225, 225);
+    height: 30px;
+    overflow: hidden;
+    line-height: 30px;
+    border: 2px solid rgb(225, 225, 225);
+    border-radius: 17px;
+}
+
+.tab.selected {
+    background-color: white;
+    border-radius: 10px 0 0 10px;
+    color: #999 ;
+}
+
+
+
+h4 {
+    text-align: center;
+    margin: 0;
+    color: #05ECEB;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+
+.form-element {
+    width: 100%;
+    min-height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+#last_name, #first_name, #email, #password, .address {
+    display: grid;
+    column-gap: 0;
+    grid-template-columns:  10fr 100px 10px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.address {
+    margin-bottom: 30px;
+}
+
+
+input, textarea {
+    display: inline-block;
+    width: 100%;
+    border: none;
+    padding: 0%;
+    margin: 0;
+    border-radius: 7px 0px 0px 7px;
+}
+
+
+label {
+    color: #ffffff;
+    border-radius: 0px 7px 7px 0px;
+    display: inline-block;
+    margin: 0;
+    width: 100%;
+    background-color: #05ECEB;
+    padding: 0 6px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.btn {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    background-color: orange;
+}
+
+
+
+::placeholder {
+    font-size: 12px;
+}
