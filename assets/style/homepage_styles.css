@@ -7,6 +7,9 @@
 
 .container__hearoheader {
     background-color: rgb(255, 80, 0);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 
     display: grid;
     grid-template-areas: 'L C R';
