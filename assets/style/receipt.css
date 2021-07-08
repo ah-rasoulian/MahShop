@@ -11,27 +11,22 @@
     padding-bottom: 20px; /*i have added this line */
 } 
 
-.content {
+
+.info {
     max-width: 600px;
     width: 50%;
     min-width: 300px;
     margin: 0 auto;
 }
 
-#welcom {
+.info__welcom{
     font-weight: bold;
     margin-bottom: 30px;
 }
 
 
 
-.black {
-    background-color: black;
-}
-
-
-
-.receipt {
+.info__tabs {
     box-sizing: content-box;
     margin: 0 auto 30px auto;
     min-width: 200px;
@@ -46,18 +41,12 @@
     border-radius: 17px;
 }
 
-.tab.selected {
+.info__receipts--active  {
     background-color: white;
     color: #999 ;
 }
 
 
-
-h4 {
-    text-align: center;
-    margin: 0;
-    color: #05ECEB;
-}
 
 
 #receipts-container {
@@ -69,29 +58,40 @@ h4 {
 
 }
 
-#receipts {
+
+.receipts {
     display: flex;
     flex-direction: column;
 }
-.grid {
+
+
+.receipts__grid--display-grid {
     display: grid;
     grid-template-columns: 1fr 41% 17% 20% 17% 2fr;
     row-gap: 2px;
-    border-bottom: 1px solid #e2e2e2;
-    color: rgb(80, 80, 80);
+}
+
+
+.receipts__item {
+  border-bottom: 1px solid #e2e2e2;
+color: rgb(80, 80, 80);
     padding: 7px;
 }
 
-.grid-item {
+
+
+.grid__item {
     padding-right: 5px;
     font-size: 12px;
     text-align: right;
 }
 
-.grid:first-child {
+
+.receipts__grid--display-grid:first-child {
     color: #999;
 }
 
-.grid:last-of-type {
+
+.receipts__grid--display-grid:last-of-type {
     border-bottom: none;
 }
