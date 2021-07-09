@@ -224,3 +224,15 @@
     left: 0;
     content: '';
 }
+
+.page__number__info {
+    background-color: honeydew;
+}
+
+.page__number {
+    padding: 0 10px;
+}
+
+.page__number__current {
+    color: red;
+}

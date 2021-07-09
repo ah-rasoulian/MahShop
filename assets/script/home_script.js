@@ -15,7 +15,7 @@
         "img_src": "assets/img/product.png",
         "product_name": "کالا",
         "product_class": "بدون دسته‌بندی",
-        "product_price": "۱۰۰۰۰ تومان"
+        "product_price": "10000"
     }
 
     class Product {
@@ -27,7 +27,9 @@
         }
     }
 
-    let page_number = 2;
+    let products = []
+
+    let page_number = 1;
 
     window.onload = async() => {
         reset_slider_interval();
@@ -93,7 +95,7 @@
         product.appendChild(price_container)
 
         let p_price = document.createElement("p")
-        p_price.innerHTML = product_price
+        p_price.innerHTML = product_price + " تومان"
         price_container.appendChild(p_price)
 
         let p_button = document.createElement("button")
@@ -105,19 +107,77 @@
     }
 
     function get_products(){
-        let products = []
-        for(let i = 0; i < 20; i ++){
+        for(let i = 0; i < 40; i ++){
             let new_product = new Product(product_json.img_src, product_json.product_name, product_json.product_class, product_json.product_price)
             products.push(new_product)
         }
         return products
     }
 
-    function draw_products(products){
+    function draw_products(){
         product_container.innerHTML = ""
         for(let i = (page_number - 1) * 15; i < Math.min(page_number * 15, products.length); i ++){
             product_container.appendChild(create_product(products[i].img_src, products[i].product_name, products[i].product_class, products[i].product_price))
         }
+        draw_page_info(products.length)
+    }
+
+    function draw_page_info(number_of_products){
+        let number_of_pages = Math.floor(number_of_products / 15) + 1
+
+        let page_info_container = document.getElementsByClassName("page__number__info")[0]
+        if (page_info_container == undefined){
+            page_info_container = document.createElement("div")
+            page_info_container.className = "page__number__info"
+        }
+        page_info_container.innerHTML = ""
+        document.getElementsByTagName("body")[0].insertBefore(page_info_container, document.getElementById("footer"))
+        
+        let previous_page_button = document.createElement("button")
+        previous_page_button.className = "page__number"
+        previous_page_button.innerHTML = "صفحه قبل"
+        previous_page_button.addEventListener("click", page_handler)
+        page_info_container.appendChild(previous_page_button)
+
+        for(let i = 1; i <= number_of_pages; i ++){
+            let page_button = document.createElement("button")
+            page_button.className = "page__number"
+            if (page_number == i){
+                page_button.className += " page__number__current"
+            }
+            page_button.innerHTML = i
+            page_button.addEventListener("click", page_handler)
+            page_info_container.appendChild(page_button)
+        }
+
+        let next_page_button = document.createElement("button")
+        next_page_button.className = "page__number"
+        next_page_button.innerHTML = "صفحه بعد"
+        next_page_button.addEventListener("click", page_handler)
+        page_info_container.appendChild(next_page_button) 
+
+    }
+
+    async function page_handler(event){
+        event.preventDefault()
+        let target_text = event.target.innerHTML
+        let number_of_pages = Math.floor(products.length / 15) + 1
+
+        if (target_text == "صفحه قبل"){
+            if(page_number > 1){
+                page_number -= 1
+            }
+        }
+        else if (target_text == "صفحه بعد"){
+            if(page_number < number_of_pages){
+                page_number += 1
+            }
+        }
+        else {
+            page_number = target_text
+        }
+
+        draw_products()
     }
 
 })()
