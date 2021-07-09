@@ -36,21 +36,24 @@
     </div>
 
     <div id="container">
-
         <div class="content">
             <div class="content__title title">
                 <h4 class="title__text--color title__text--allign"> فروشگاه - ورود</h4>
             </div>
-            <form action="" class="content__title enterform ">
+            <form action="" name="form" class="content__title enterform" onsubmit="return formValidation()" id="formid">
                 <div class="enterform__element  enterform__email">
-                    <input class="enterform__input" type="email" placeholder="ایمیل خود را وارد کنید"  id="email" required>
+                    <input name="email" class="enterform__input " type="email" placeholder="ایمیل خود را وارد کنید"  id="email" >
                     <label class="enterform__label"for="email">ایمیل</label>
                 </div>
+                <div class="enterform__emailerror">
+                </div>
                 <div class="enterform__element enterform__password">
-                    <input class="enterform__input" type="password" minlength="6" placeholder="رمز عبور خود را وارد کنید " id="pass" required>
+                    <input name="password" class="enterform__input " type="password" minlength="6" placeholder="رمز عبور خود را وارد کنید " id="pass" >
                     <label class="enterform__label" for="pass">رمز عبور</label>
                 </div>
-                <button class="enterform__btn" type="button" >ورود</button>
+                <div class="enterform__passerror">
+                </div>
+                <button class="enterform__btn" form="formid" type="submit" >ورود</button>
             </form>
         </div>
 
@@ -59,6 +62,7 @@
     <div id="footer">
         <p>تمامی حقوق برای توسعه‌دهندگان، امیرحسین رسولیان و محمدامین رحیمی، محفوظ است</p>
     </div>
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script src="assets/script/enter_form.js" defer></script>
 </body>
 </html>
