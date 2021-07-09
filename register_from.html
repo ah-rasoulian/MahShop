@@ -38,37 +38,36 @@
     </div>
 
     <div id="container">
-
         <div class="content">
-            <div class="title">
-                <h4> فروشگاه - ثبت‌نام</h4>
+            <div class="content__title ">
+                <h4 class="title__text--color title__text--allign"> فروشگاه - ثبت‌نام</h4>
             </div>
-            <form action="" class="form">
-                <div class="form-element name_info">
-                    <div id="first_name">
-                        <input type="text" placeholder="نام خود را وارد کنید"  id="fname">
-                        <label for="fname">نام</label>
+            <form action="" class="registerform content__form">
+                <div class="registerform__element ">
+                    <div class="registerform__element__div" >
+                        <input class="registerform__element__input registerform__element__fname" type="text" placeholder="نام خود را وارد کنید"  id="fname" required>
+                        <label class="registerform__element__label registerform__element__fname" for="fname">نام</label>
                     </div>
-                    <div id="last_name">
-                        <input type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname">
-                        <label for="lname">نام خانوادگی</label>
-                    </div>
-                </div>
-                <div class="form-element email_pass ">
-                    <div id="email">
-                        <input type="text" placeholder="ایمیل خود را وارد کنید"  id="mail">
-                        <label for="mail">ایمیل</label>
-                    </div>
-                    <div id="password">
-                        <input type="password" placeholder="رمز خود را وارد کنید"  id="p_word">
-                        <label for="p_word">رمز عبور</label>
+                    <div class="registerform__element__div">
+                        <input class="registerform__element__input registerform__element__lname" type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname" required>
+                        <label class="registerform__element__label registerform__element__lname" for="lname">نام خانوادگی</label>
                     </div>
                 </div>
-                <div class="form_element address" >
-                    <textarea placeholder="آدرس خود را وارد کنید"  id="email"></textarea>
-                    <label for="email">آدرس</label>
+                <div class="registerform__element">
+                    <div class="registerform__element__div" >
+                        <input class="registerform__element__input registerform__element__email" type="email" placeholder="ایمیل خود را وارد کنید"  id="mail" required>
+                        <label class="registerform__element__label registerform__element__email" for="mail">ایمیل</label>
+                    </div>
+                    <div class="registerform__element__div" >
+                        <input class="registerform__element__input registerform__element__password" type="password" placeholder="رمز خود را وارد کنید" minlength="6" id="p_word" required>
+                        <label class="registerform__element__label registerform__element__password" for="p_word">رمز عبور</label>
+                    </div>
                 </div>
-                <button class="btn" type="button" >ثبت نام</button>
+                <div class="registerform__element registerform__element__div registerform__element--margin-button" >
+                    <textarea class="registerform__element__textarea registerform__element__address" placeholder="آدرس خود را وارد کنید"  id="addr" required></textarea>
+                    <label class="registerform__element__label registerform__element__address" class="address__labe" for="addr">آدرس</label>
+                </div>
+                <button class="registerform__btn" type="button" >ثبت نام</button>
             </form>
         </div>
 

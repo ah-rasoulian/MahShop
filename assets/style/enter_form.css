@@ -17,18 +17,23 @@
     margin: 0 auto;
 }
 
-.title {
+.content__title {
     margin-bottom: 30px;
 }
 
-h4 {
-    text-align: center;
-    margin: 0;
+.title__text--color {
     color: #05ECEB;
 }
 
+.title__text--allign {
+    text-align: center;
+    margin: 0;
+}
 
-form {
+
+
+
+.enterform {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,7 +42,7 @@ form {
 }
 
 
-.form-element {
+.enterform__element {
     width: 100%;
     height: 30px;
     display: flex;
@@ -45,21 +50,19 @@ form {
     color: white;
 }
 
-.form-element.id {
+.enterform__password {
     margin-bottom: 30px;
     
 }
 
-.form-element.email {
+.enterform__email{
     margin-bottom: 15px ;
 }
 
 
 
 
-
-
-input {
+.enterform__input {
     display: inline-block;
     width: 65%;
     border: none;
@@ -69,7 +72,8 @@ input {
 }
 
 
-label {
+
+.enterform__label {
     border-radius: 0px 7px 7px 0px;
     display: inline-block;
     margin: 0;
@@ -80,7 +84,8 @@ label {
     line-height: 30px;
 }
 
-.btn {
+
+.enterform__btn {
     width: 40px;
     display: flex;
     align-items: center;

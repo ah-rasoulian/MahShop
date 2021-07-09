@@ -11,21 +11,21 @@
 
 } 
 
-.content {
+.info {
     max-width: 600px;
     width: 50%;
     min-width: 300px;
     margin: 0 auto;
 }
 
-.welcom.account {
+.info__div {
     margin: 0 auto 30px auto;
     min-width: 250px;
     display: grid;
     grid-template-columns: 49.5% 2px 49.5%;
 }
 
-#account {
+.info__account {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -35,12 +35,12 @@
     height: 40px;
 }
 
-#account p {
+.info__account p {
     font-size: 10px;
     line-height: 13px;
 }
 
-#account button{
+.info__account button{
     font-size: 10px;
     height: 30px;
     border: none;
@@ -49,7 +49,7 @@
     cursor: pointer;
 }
 
-#welcom {
+.info__welcom {
     font-weight: bold;
 }
 
@@ -59,7 +59,7 @@
 
 
 
-.receipt {
+.info__tabs {
     box-sizing: content-box;
     margin: 0 auto 30px auto;
     min-width: 200px;
@@ -74,7 +74,7 @@
     border-radius: 17px;
 }
 
-.tab.selected {
+.info__prof--active {
     background-color: white;
     border-radius: 10px 0 0 10px;
     color: #999 ;
@@ -98,7 +98,7 @@ form {
 }
 
 
-.form-element {
+.form__element {
     width: 100%;
     min-height: 30px;
     display: flex;
@@ -107,7 +107,7 @@ form {
     margin-bottom: 15px;
 }
 
-#last_name, #first_name, #email, #password, .address {
+.form__element__div{
     display: grid;
     column-gap: 0;
     grid-template-columns:  10fr 100px 10px;
@@ -116,12 +116,21 @@ form {
     width: 100%;
 }
 
-.address {
+.form__element--margin-button {
     margin-bottom: 30px;
 }
 
 
-input, textarea {
+.form__input {
+    display: inline-block;
+    width: 100%;
+    border: none;
+    padding: 0%;
+    margin: 0;
+    border-radius: 7px 0px 0px 7px;
+}
+
+.form__textarea {
     display: inline-block;
     width: 100%;
     border: none;
@@ -131,7 +140,7 @@ input, textarea {
 }
 
 
-label {
+.form__label {
     color: #ffffff;
     border-radius: 0px 7px 7px 0px;
     display: inline-block;
@@ -143,7 +152,7 @@ label {
     line-height: 30px;
 }
 
-.btn {
+.form__btn {
     width: 40px;
     display: flex;
     align-items: center;

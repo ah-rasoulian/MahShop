@@ -18,18 +18,22 @@
     margin: 0 auto;
 }
 
-.title {
+.content__title {
     margin-bottom: 30px;
 }
 
-h4 {
+.title__text--allign{
     text-align: center;
     margin: 0;
+}
+
+.title__text--color{
     color: #05ECEB;
+
 }
 
 
-form {
+.content__form {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,7 +42,7 @@ form {
 }
 
 
-.form-element {
+.registerform__element {
     width: 100%;
     min-height: 30px;
     display: flex;
@@ -47,7 +51,7 @@ form {
     margin-bottom: 15px;
 }
 
-#last_name, #first_name, #email, #password, .address {
+.registerform__element__div {
     display: grid;
     column-gap: 0;
     grid-template-columns:  10fr 100px 10px;
@@ -56,12 +60,11 @@ form {
     width: 100%;
 }
 
-.address {
+.registerform__element--margin-button {
     margin-bottom: 30px;
 }
 
-
-input, textarea {
+.registerform__element__input{
     display: inline-block;
     width: 100%;
     border: none;
@@ -71,7 +74,19 @@ input, textarea {
 }
 
 
-label {
+
+.registerform__element__textarea{
+    display: inline-block;
+    width: 100%;
+    border: none;
+    padding: 0%;
+    margin: 0;
+    border-radius: 7px 0px 0px 7px;
+}
+
+
+
+.registerform__element__label  {
     color: white;
     border-radius: 0px 7px 7px 0px;
     display: inline-block;
@@ -83,7 +98,8 @@ label {
     line-height: 30px;
 }
 
-.btn {
+
+.registerform__btn {
     width: 40px;
     display: flex;
     align-items: center;

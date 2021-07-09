@@ -37,44 +37,44 @@
 
     <div id="container">
 
-        <div class="content">
-            <div class="welcom account">
-                <div id="account">
+        <div class="info content">
+            <div class="info__div welcom account">
+                <div class="info__account" id="account">
                     <button>افزایش موجودی</button>
                     <p> موجودی حساب شما:۱۰/۰۰۰</p>
                 </div>
                 <div class="black"></div>
-                <div id="welcom">
+                <div class="info__welcom" id="welcom">
                     <p>محمدامین عزیز، خوش آمدید</p>
                 </div>
 
             </div>
-            <div class="receipt">
-                <div class="prof tab selected">پروفایل</div>
-                <div class="rec tab">رسیدها</div>
+            <div class="info__tabs receipt">
+                <div class="info__prof info__prof--active ">پروفایل</div>
+                <div class="info__rec rec tab">رسیدها</div>
             </div>
             <form action="" class="form">
-                <div class="form-element name_info">
-                    <div id="first_name">
-                        <input type="text" placeholder="نام خود را وارد کنید"  id="fname">
-                        <label for="fname">نام</label>
+                <div class="form__element name_info">
+                    <div class="form__element__div">
+                        <input class="form__input form__fname" type="text" placeholder="نام خود را وارد کنید"  id="fname" required>
+                        <label class="form__label form__fname" for="fname">نام</label>
                     </div>
-                    <div id="last_name">
-                        <input type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname">
-                        <label for="lname">نام خانوادگی</label>
-                    </div>
-                </div>
-                <div class="form-element email_pass ">
-                    <div id="password">
-                        <input type="password" placeholder="رمز خود را وارد کنید"  id="p_word">
-                        <label for="p_word">رمز عبور</label>
+                    <div class="form__element__div">
+                        <input class="form__input form__lname" type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname" required>
+                        <label class="form__label form__lname" for="lname">نام خانوادگی</label>
                     </div>
                 </div>
-                <div class="form_element address" >
-                    <textarea placeholder="آدرس خود را وارد کنید"  id="address"></textarea>
-                    <label for="address">آدرس</label>
+                <div class="form__element email_pass ">
+                    <div class="form__element__div">
+                        <input class="form__input form__password" type="password" minlength="6" placeholder="رمز خود را وارد کنید"  id="p_word" required>
+                        <label class="form__label form__password" for="p_word">رمز عبور</label>
+                    </div>
                 </div>
-                <button class="btn" type="button" >ثبت نام</button>
+                <div class="form__element form__element__div form__element--margin-button" >
+                    <textarea class="form__textarea form__address" placeholder="آدرس خود را وارد کنید"  id="address" required></textarea>
+                    <label class="form__label form__address" for="address">آدرس</label>
+                </div>
+                <button class="form__btn" type="button" >ثبت نام</button>
             </form>
         </div>
 
