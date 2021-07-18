@@ -23,7 +23,7 @@ function removeModal(){
 
 function renderModal(status, message){
     let status_message = ""
-    if (status == 1){
+    if (status){
         status_message = "موفق"
     }
     else {
@@ -101,7 +101,7 @@ function formValidation(){
     }
 
     //checking max length
-    if((!maxLength(email, 255)), (!maxLength(password, 255)), (!maxLength(address, 1000))){
+    if((!maxLength(password, 255)), (!maxLength(address, 1000)), (!maxLength(first_name, 255)), (!maxLength(last_name, 255))){
         console.log("maxlength is wrong")
         return false
     }
