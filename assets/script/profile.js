@@ -1,7 +1,7 @@
 "use strict";
 
 
-document.getElementById("formid").addEventListener("submit", enterValidation)
+document.getElementById("formid").addEventListener("submit", editValidation)
 let users = [
     {
         "email": "ahr96@aut.ac.ir",
@@ -23,7 +23,7 @@ function removeModal(){
 
 function renderModal(status, message){
     let status_message = ""
-    if (status){
+    if (status == 1){
         status_message = "موفق"
     }
     else {
@@ -65,51 +65,32 @@ function renderModal(status, message){
     })
 }
 
-function enterValidation(event){
+function editValidation(event){
     event.preventDefault()
+
     let message = ""
-    let logged_in = false
+    let succeed = false
     
     if(formValidation()){
-        let password = document.form.password.value;
-        let email = document.form.email.value;
-
-        for(let i = 0; i < users.length; i++){
-            if(users[i].email == email){
-                if(users[i].pass == password){
-                    logged_in = true
-                }
-                break
-            }
-        }
-
-        if (logged_in){
-            message = "خوش آمدید"
-        }
-        else {
-            message = "نام کاربری یا رمز عبور معتبر نیست"
-        }
+        succeed = true
+        message = "تغییرات با موفقیت انجام شدند."
     }
     else{
-        message = "همه فیلد‌های فرم الزامی هستند. نام کاربری و رمزعبور باید محدودیت‌ها را ارضا کنند."
+        message = "همه فیلد‌های فرم الزامی هستند. رمزعبور باید محدودیت‌ها را ارضا کند."
     }
 
-    renderModal(logged_in, message)
+    renderModal(succeed, message)
 }
 
 function formValidation(){
-    let password = document.form.password.value;
-    let email = document.form.email.value;
+    let password = document.getElementById("pass").value
+    let first_name = document.getElementById("fname").value.trim()
+    let last_name = document.getElementById("lname").value.trim()
+    let address = document.getElementById("addr").value
 
     //all fields are required
-    if((!requiredInput(password)) || (!requiredInput(email))){
+    if((!requiredInput(password)) || (!requiredInput(first_name)) || (!requiredInput(last_name)) || (!requiredInput(address))){
         console.log("required input are missing")
-        return false
-    }
-
-    //checking email format
-    if(!emailFormat(email)){
-        console.log("email is not well-formatted")
         return false
     }
 
@@ -120,7 +101,7 @@ function formValidation(){
     }
 
     //checking max length
-    if((!maxLength(email, 255)), (!maxLength(password, 255))){
+    if((!maxLength(email, 255)), (!maxLength(password, 255)), (!maxLength(address, 1000))){
         console.log("maxlength is wrong")
         return false
     }
@@ -133,11 +114,6 @@ function requiredInput(input){
         return false;
     }
     return true;
-}
-
-function emailFormat(email){
-    const pattern = /\S+@\S+\.\S+/
-    return pattern.test(email)
 }
 
 function passwordFormat(password){
@@ -168,57 +144,17 @@ function maxLength(input, max){
     return true
 }
 
-
-document.getElementById("email").addEventListener("input", emailValidation)
-document.getElementById("email").addEventListener("focusout", focusout)
-
-function emailValidation(){
-    let email = document.form.email.value;
-    let error_messaegs = []
-    let there_is_error = false
-
-    if(!emailFormat(email)){
-        there_is_error = true
-        error_messaegs.push("- فرمت ایمیل نادرست است.")
-    }
-    if(!maxLength(email, 255)){
-        there_is_error = true
-        error_messaegs.push("- طول ایمیل بزرگتر از حد مجاز است.")
-    }
-
-    if(!there_is_error){
-        document.querySelector(".enterform__email").classList.remove("enterform__email--errorexist")
-        document.querySelector("#email:focus").style.border = "1px solid green";
-        document.querySelector("#email").style.outline = "none"; 
-        let div = document.querySelector(".enterform__emailerror")
-        div.innerHTML = ""       
-        return true
-    }
-
-    document.querySelector(".enterform__email").classList.add("enterform__email--errorexist")
-    document.querySelector("#email").style.border = "1px solid red";
-    document.querySelector("#email").style.outline = "none";
-
-    
-    let div = document.querySelector(".enterform__emailerror")
-    div.innerHTML = ""
-    for(let i=0 ; i<error_messaegs.length ; i++){
-        div.innerHTML += "<p>" + error_messaegs[i] + "</p>"
-    }
-
-
-    return false;
-}
-
 function focusout(event){
     event.target.style.border = "none";
+    document.getElementsByClassName("enterform__passerror")[0].innerHTML = ""
+    document.getElementById("error__display").style.display = "none"
 }
 
 document.getElementById("pass").addEventListener("input", passValidation)
 document.getElementById("pass").addEventListener("focusout", focusout)
 
 function passValidation(){
-    let password = document.form.password.value;
+    let password = document.getElementById("pass").value
     let error_messaegs = []
     let there_is_error = false
 
@@ -240,7 +176,8 @@ function passValidation(){
     }
 
     if(!there_is_error){
-        document.querySelector(".enterform__password").classList.remove("enterform__email--errorexist")
+        document.getElementById("error__display").style.display = "none"
+        document.querySelector(".form__password").classList.remove("enterform__email--errorexist")
         document.querySelector("#pass:focus").style.border = "1px solid green";
         document.querySelector("#pass").style.outline = "none"; 
         let div = document.querySelector(".enterform__passerror")
@@ -248,7 +185,8 @@ function passValidation(){
         return true
     }
 
-    document.querySelector(".enterform__password").classList.add("enterform__email--errorexist")
+    document.getElementById("error__display").style.display = "block"
+    document.querySelector(".form__password").classList.add("enterform__email--errorexist")
     document.querySelector("#pass").style.border = "1px solid red";
     document.querySelector("#pass").style.outline = "none";
     

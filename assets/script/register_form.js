@@ -239,9 +239,9 @@ function passValidation(){
             error_messaegs.push("- رمز باید شامل عدد باشد")
         }
     }
-    if(!maxLength(email, 255)){
+    if(!maxLength(password, 255)){
         there_is_error = true
-        error_messaegs.push("- طول ایمیل بزرگتر از حد مجاز است.")
+        error_messaegs.push("- طول رمز بزرگتر از حد مجاز است.")
     }
 
     if(!there_is_error){

@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="assets/style/basic_styles.css">
     <link rel="stylesheet" href="assets/style/homepage_styles.css">
 
-
+    
+    <link href="assets/style/modal.css" rel="stylesheet" type="text/css">
+    <script src="assets/script/profile.js" defer></script>
     <title>profile</title>
 </head>
 <body>
@@ -53,28 +55,31 @@
                 <div class="info__prof info__prof--active ">پروفایل</div>
                 <div class="info__rec rec tab">رسیدها</div>
             </div>
-            <form action="" class="form">
+            <form action="" class="form" name="form" id="formid">
                 <div class="form__element name_info">
                     <div class="form__element__div">
-                        <input class="form__input form__fname" type="text" placeholder="نام خود را وارد کنید"  id="fname" required>
+                        <input class="form__input form__fname" type="text" placeholder="نام خود را وارد کنید"  id="fname">
                         <label class="form__label form__fname" for="fname">نام</label>
                     </div>
                     <div class="form__element__div">
-                        <input class="form__input form__lname" type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname" required>
+                        <input class="form__input form__lname" type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname">
                         <label class="form__label form__lname" for="lname">نام خانوادگی</label>
                     </div>
                 </div>
                 <div class="form__element email_pass ">
                     <div class="form__element__div">
-                        <input class="form__input form__password" type="password" minlength="6" placeholder="رمز خود را وارد کنید"  id="p_word" required>
-                        <label class="form__label form__password" for="p_word">رمز عبور</label>
+                        <input class="form__input form__password" type="password" minlength="6" placeholder="رمز خود را وارد کنید"  id="pass">
+                        <label class="form__label form__password" for="pass">رمز عبور</label>
                     </div>
                 </div>
-                <div class="form__element form__element__div form__element--margin-button" >
-                    <textarea class="form__textarea form__address" placeholder="آدرس خود را وارد کنید"  id="address" required></textarea>
-                    <label class="form__label form__address" for="address">آدرس</label>
+                <div class="form__element" id="error__display">
+                    <div class="enterform__passerror"></div>
                 </div>
-                <button class="form__btn" type="button" >ثبت نام</button>
+                <div class="form__element form__element__div form__element--margin-button" >
+                    <textarea class="form__textarea form__address" placeholder="آدرس خود را وارد کنید"  id="addr"></textarea>
+                    <label class="form__label form__address" for="addr">آدرس</label>
+                </div>
+                <button class="form__btn" type="submit" form="formid">ثبت نام</button>
             </form>
         </div>
 
