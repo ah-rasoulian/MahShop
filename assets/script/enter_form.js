@@ -74,14 +74,24 @@ function enterValidation(event){
         let password = document.form.password.value;
         let email = document.form.email.value;
 
-        for(let i = 0; i < users.length; i++){
-            if(users[i].email == email){
-                if(users[i].pass == password){
-                    logged_in = true
-                }
-                break
+        let data = {
+            "user_name": email,
+            "password": password
+        }
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function(){
+            if(this.responseText != "operation failed"){
+                json_response = JSON.parse(this.responseText)
+                localStorage.removeItem("token")
+                localStorage.setItem("token", json_response.token)
+                logged_in = true
             }
         }
+
+        xhttp.open("POST", "http://127.0.0.1/login", true)
+        xhttp.setRequestHeader('Content-Type', 'application/json')
+        xhttp.send(JSON.stringify(data))
 
         if (logged_in){
             message = "خوش آمدید"

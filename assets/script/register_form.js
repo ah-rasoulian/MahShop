@@ -73,14 +73,31 @@ function registerValidation(event){
     
     if(formValidation()){
         is_available = 1
-        let email = document.getElementById("email").value
 
-        for(let i = 0; i < users.length; i++){
-            if(users[i].email == email){
+        let data = {
+            "user_name": document.getElementById("email").value,
+            "password": document.getElementById("pass").value.trim(),
+            "first_name": document.getElementById("fname").value.trim(),
+            "last_name": document.getElementById("lname").value.trim(),
+            "address": document.getElementById("addr").value
+        }
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function(){
+            if(this.responseText != "registeration failed"){
+                json_response = JSON.parse(this.responseText)
+                localStorage.removeItem("token")
+                localStorage.setItem("token", json_response.token)
+                logged_in = true
+            }
+            else {
                 is_available = 2
-                break
             }
         }
+
+        xhttp.open("POST", "http://127.0.0.1/register", true)
+        xhttp.setRequestHeader('Content-Type', 'application/json')
+        xhttp.send(JSON.stringify(data))
 
         if (is_available == 1){
             message = "خوش آمدید"

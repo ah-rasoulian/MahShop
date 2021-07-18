@@ -8,11 +8,11 @@
     let product_container = document.getElementsByClassName("container__contents--position-left")[0]
 
     let hearoheader_background_index = 0;
-    let backgrounds_src = ["url('assets/img/bg1.jpg')", "url('assets/img/bg2.jpg')", "url('assets/img/bg3.jpg')"];
+    let backgrounds_src = ["url('../assets/img/bg1.jpg')", "url('../assets/img/bg2.jpg')", "url('../assets/img/bg3.jpg')"];
     let slider_interval;
 
     let product_json = {
-        "img_src": "assets/img/product.png",
+        "img_src": "../assets/img/product.png",
         "product_name": "کالا",
         "product_class": "بدون دسته‌بندی",
         "product_price": "10000"
@@ -185,4 +185,8 @@
         console.log("clicked")
     })
     
+    document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
+        let url = ""
+        window.location.href = url
+    })
 })()

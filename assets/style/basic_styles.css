@@ -89,6 +89,10 @@ body {
 }
 
 .login__button--loggedin-no {
+    display: block;
+}
+
+.login__button--loggedin-yes {
     display: none;
 }
 

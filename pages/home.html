@@ -9,12 +9,12 @@
 
         <title>Mah Shop</title>
         <!--apply styles-->
-        <link href="assets/style/basic_styles.css" rel="stylesheet" type="text/css">
-        <link href="assets/style/arrow_styles.css" rel="stylesheet" type="text/css">
-        <link href="assets/style/homepage_styles.css" rel="stylesheet" type="text/css">
+        <link href="../assets/style/basic_styles.css" rel="stylesheet" type="text/css">
+        <link href="../assets/style/arrow_styles.css" rel="stylesheet" type="text/css">
+        <link href="../assets/style/homepage_styles.css" rel="stylesheet" type="text/css">
         <link href='http://www.fontonline.ir/css/BYekan.css' rel='stylesheet' type='text/css'>
 
-        <script src="assets/script/home_script.js" defer></script>
+        <script src="../assets/script/home_script.js" defer></script>
     </head>
 
     <body>
@@ -26,12 +26,14 @@
             <span class="menu__item menu__item--type-products">محصولات</span>
 
             <div class="menu__item dropdown">
-                <button class="login__button login__button--loggedin-no">ورود/ثبت نام</button>
+                <button class="button login__button login__button--loggedin-no">ورود/ثبت نام</button>
                 
-                <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
-                <div class="dropdown__content">
-                    <a>پروفایل</a>
-                    <a>خروج از حساب</a>
+                <div class="login__button--loggedin-yes">
+                    <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
+                    <div class="dropdown__content">
+                        <a>پروفایل</a>
+                        <a>خروج از حساب</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,7 +48,7 @@
                     <h1>..در محصولات سایت جستجو کنید</h1>
                     <input class="search__input" type="search" placeholder="نام محصول خود را وارد کنید..">
                     <button class="button search__button">جستجو کنید</button>
-                    <img id="clock_image" src="assets/img/clock.png">
+                    <img id="clock_image" src="../assets/img/clock.png">
                 </div>
 
                 <div class="container__hearoheader__right">
