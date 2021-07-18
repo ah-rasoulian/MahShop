@@ -197,3 +197,13 @@ function passValidation(){
     }
     return false;
 }
+
+document.getElementsByClassName("info__profile")[0].addEventListener('click', () => {
+    document.getElementsByClassName("content")[0].style.display = "none"
+    document.getElementsByClassName("receipt__page")[0].style.display = "block"
+})
+
+document.getElementsByClassName("info__receipts")[1].addEventListener('click', () => {
+    document.getElementsByClassName("receipt__page")[0].style.display = "none"
+    document.getElementsByClassName("content")[0].style.display = "block"
+})
