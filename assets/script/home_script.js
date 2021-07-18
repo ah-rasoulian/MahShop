@@ -180,4 +180,9 @@
         draw_products()
     }
 
+    document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
+        document.getElementsByClassName("container__contents")[0].scrollIntoView()
+        console.log("clicked")
+    })
+    
 })()
