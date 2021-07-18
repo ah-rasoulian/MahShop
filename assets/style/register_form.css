@@ -111,3 +111,33 @@
     line-height: 30px;
     background-color: orange;
 }
+
+.enterform__email--errorexist{
+    margin-bottom: 0px;
+}
+
+.enterform__emailerror p{
+    text-align: right;
+    color: red;
+    font-size: 10px;
+    line-height: 14px;
+    margin: 5px;
+}
+
+
+.enterform__password--errorexist{
+    margin-bottom: 0px;
+}
+
+.enterform__passerror p{
+    text-align: right;
+    color: red;
+    font-size: 10px;
+    line-height: 14px;
+    margin: 5px;
+    margin-bottom: 5px;
+}
+
+#error__display {
+    display: none;
+}
