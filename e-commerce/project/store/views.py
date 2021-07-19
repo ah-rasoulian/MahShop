@@ -13,28 +13,28 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import CategorySerializer, StuffListSerializer, StuffSerializer, UserSerializer, ReceiptSerializer
+from .serializers import CategorySerializer, PurchaseSerializer, StuffListSerializer, StuffSerializer, UserSerializer, ReceiptSerializer
 from rest_framework.authtoken.models import Token
 import ast
 
 
 @api_view(['POST'])
 def register(request):
-    serializer = UserSerializer(data=ast.literal_eval(request.body.decode("UTF-8")))
+    serializer = UserSerializer(data=request.data)
     print(serializer.is_valid())
     if serializer.is_valid():
         serializer.save()
         token = Token.objects.get(user=user.objects.get(user_name=serializer.data["user_name"])).key
         data = {}
         data["token"] = token
-        return Response(data)
+        return HttpResponse(data)
     return Response("registeration failed")
 
 
 @api_view(['POST'])
 def login(request):
     
-    serializer = UserSerializer(data=ast.literal_eval(request.body.decode("UTF-8")))
+    serializer = UserSerializer(data=request.data)
     print(serializer.initial_data)
     print(serializer.is_valid())
     token = Token.objects.get(user=user.objects.get(user_name=serializer.data["user_name"])).key
@@ -47,7 +47,7 @@ def login(request):
 @permission_classes((IsAuthenticated,))
 def edit_info(request, pk):
     usr = user.objects.get(user_name=pk)
-    serializer = UserSerializer(instance=usr, data=ast.literal_eval(request.body.decode("UTF-8")))
+    serializer = UserSerializer(instance=usr, data=request.data)
     usr.delete()
     if serializer.is_valid():
         serializer.save()
@@ -61,7 +61,7 @@ def edit_info(request, pk):
 def add_category(request):
     user = request.user
     if user.is_admin:
-        serializer = CategorySerializer(data=ast.literal_eval(request.body.decode("UTF-8")))
+        serializer = CategorySerializer(data=request.data)
         print(serializer.is_valid())
         if serializer.is_valid():
             serializer.save()
@@ -75,7 +75,7 @@ def add_category(request):
 def update_category(request, pk):
     if request.user.is_admin:
         cat = category.objects.get(category_name=pk)
-        serializer = CategorySerializer(instance=cat, data=ast.literal_eval(request.body.decode("UTF-8")))
+        serializer = CategorySerializer(instance=cat, data=request.data)
         if serializer.is_valid():
             cat.delete()
             serializer.save()
@@ -87,7 +87,7 @@ def update_category(request, pk):
 @permission_classes((IsAuthenticated,))
 def delete_category(request):
     if request.user.is_admin:
-        serializer = CategorySerializer(data=ast.literal_eval(request.body.decode("UTF-8")))
+        serializer = CategorySerializer(data=request.data)
         cat = category.objects.get(category_name=serializer.initial_data["category_name"])
         cat.delete()
         return Response("category update")
@@ -126,8 +126,13 @@ def filtered_receipt(request, pk):
 
 @api_view(["POST"])
 def stuff_list(request):
-    filter = StuffListSerializer(data=ast.literal_eval(request.body.decode("UTF-8")))
+    filter = StuffListSerializer(data=request.data)
+    print(filter.is_valid())
+
+    print(filter)
     stuff_list = stuff.objects.order_by("-sold_count").filter(category_name=filter["category_name"].value)
+
+
     if filter["price"].value == "asc":
         stuff_list = stuff_list.order_by("price")
     elif filter["price"].value == "desc":
@@ -140,10 +145,12 @@ def stuff_list(request):
         stuff_list = stuff_list.order_by("-creation_date")
 
 
-    if filter["lbp"].value != "none":
+
+    if filter["lbp"].value != -1:
         stuff_list = [x for x in stuff_list if x.price>filter["lbp"].value]
-    if filter["ubp"].value != "none":
+    if filter["ubp"].value != -1:
         stuff_list = [x for x in stuff_list if x.price< filter["ubp"].value]
+
     serializer = StuffSerializer(stuff_list, many=True)
     return Response(serializer.data)
 
@@ -151,10 +158,48 @@ def stuff_list(request):
 @api_view(["POST"])
 @permission_classes((IsAuthenticated,))
 def add_stuff(request):
-    serializer = StuffSerializer(data=ast.literal_eval(request.body.decode("UTF-8")))
+    serializer = StuffSerializer(data=request.data)
     print(serializer.is_valid())
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
 
 
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
+def purchase(request):
+    serializer = PurchaseSerializer(data=request.data)
+    if serializer.is_valid():
+        stf = stuff.objects.get(stuff_name=serializer.initial_data["stuff_name"])
+        usr = request.user
+        if serializer.initial_data["items"] < stf.stock:
+            if serializer.initial_data["items"]*stf.price < usr.charge:
+                usr.charge = usr.charge - (serializer.initial_data["items"]*stf.price)
+                usr.save()
+                stf.stock = stf.stock - serializer.initial_data["items"]
+                stf.sold_count = stf.sold_count + serializer.initial_data["items"]
+                stf.save()
+                return Response("succesfful purchase")
+            else:
+                return Response("you don't have enough money")
+        else:
+            return Response("there is not enough stuff")
+        
+    
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
+def increase_charge(request):
+    serializer = PurchaseSerializer(data=request.data)
+    request.user.charge = request.user.charge + serializer.initial_data["charge"]
+    request.user.save()
+    return Response("successfull")
+
+
+
+@api_view(["POST"])
+@permission_classes((IsAuthenticated,))
+def increase_charge(request):
+    serializer = PurchaseSerializer(data=request.data)
+    request.user.charge = request.user.charge + serializer.initial_data["charge"]
+    request.user.save()
+    return Response("successfull")

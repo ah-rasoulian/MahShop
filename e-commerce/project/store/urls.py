@@ -15,4 +15,7 @@ urlpatterns = [
     path("receipt/<str:pk>", views.filtered_receipt, name="receipt"),
     path("stuff-list", views.stuff_list, name="stuff-list"),
     path("add-stuff", views.add_stuff, name="add-stuff"),
+    path("purchase", views.purchase, name="purchase"),
+    path("increase-charge", views.increase_charge, name="increase-charge"),
+
 ]
