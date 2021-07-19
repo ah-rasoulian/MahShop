@@ -89,7 +89,7 @@ function editValidation(event){
             }
         }
 
-        xhttp.open("POST", "http://127.0.0.1/register", true)
+        xhttp.open("POST", "http://127.0.0.1/edit-info", true)
         xhttp.setRequestHeader('Content-Type', 'application/json')
         xhttp.send(JSON.stringify(data))
     }

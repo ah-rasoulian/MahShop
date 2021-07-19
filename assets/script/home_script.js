@@ -11,6 +11,14 @@
     let backgrounds_src = ["url('../assets/img/bg1.jpg')", "url('../assets/img/bg2.jpg')", "url('../assets/img/bg3.jpg')"];
     let slider_interval;
 
+    let products_info = {
+        "category": "بدون دسته‌بندی",
+        "price": "desc",
+        "date": "none",
+        "lbp": "none",
+        "ubp": "none"
+    }
+
     let product_json = {
         "img_src": "../assets/img/product.png",
         "product_name": "کالا",
@@ -32,8 +40,25 @@
     let page_number = 1;
 
     window.onload = async() => {
+        initializer();
         reset_slider_interval();
         draw_products(get_products());
+    }
+
+    function initializer(){
+        let sorting_buttons = document.getElementsByClassName("button__sorting")
+        for (let i = 0; i < sorting_buttons.length; i++){
+            sorting_buttons.item(i).addEventListener('click', change_sorting_button)
+        }
+    }
+
+    function change_sorting_button(event){
+        if (event.target.classList.contains("button__sorting--status-clicked")){
+            event.target.classList.remove("button__sorting--status-clicked")
+        }
+        else {
+            event.target.classList.add("button__sorting--status-clicked")
+        }
     }
 
     function change_hearoheader_background() {
@@ -182,7 +207,6 @@
 
     document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
         document.getElementsByClassName("container__contents")[0].scrollIntoView()
-        console.log("clicked")
     })
     
     document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
