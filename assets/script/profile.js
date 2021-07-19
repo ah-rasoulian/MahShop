@@ -67,9 +67,6 @@ function renderModal(status, message){
 
 function editValidation(event){
     event.preventDefault()
-
-    let message = ""
-    let succeed = false
     
     if(formValidation()){
         let data = {
@@ -83,23 +80,23 @@ function editValidation(event){
 
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == XMLHttpRequest.DONE){
-                if(xhttp.responseText != "registeration failed"){
-                    json_response = JSON.parse(xhttp.responseText)
-                    localStorage.removeItem("token")
-                    localStorage.setItem("token", json_response.token)
-                    succeed = true
+                json_response = JSON.parse(xhttp.responseText)
+                if(xhttp.responseText != "you don't have premission"){
+                    renderModal(true, "تغییرات با موفقیت اعمال شد.")
+                }
+                else {
+                    renderModal(false, "شما مجاز به اعمال تغییرات نیستید.")
                 }
             }
         }
 
         xhttp.open("POST", "http://127.0.0.1:8000/edit-info", true)
+        xhttp.setRequestHeader('Content-Type', 'application/json')
         xhttp.send(JSON.stringify(data))
     }
     else{
-        message = "همه فیلد‌های فرم الزامی هستند. رمزعبور باید محدودیت‌ها را ارضا کند."
+        renderModal(false, "همه فیلد‌های فرم الزامی هستند. رمزعبور باید محدودیت‌ها را ارضا کند.")
     }
-
-    renderModal(succeed, message)
 }
 
 function formValidation(){
