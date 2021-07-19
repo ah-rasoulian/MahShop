@@ -117,18 +117,17 @@ def receipts(request):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def filtered_receipt(request, pk):
-    rec = receipt.objects.get(tracing_code=pk)
-    serializer = ReceiptSerializer(rec, many=False)
-    return Response(serializer.data)
+    if request.user.is_admin:
+        rec = receipt.objects.filter(tracing_code=pk)
+        serializer = ReceiptSerializer(rec, many=True)
+        return Response(serializer.data)
+    return Response("you don't have premission")
 
-        
+
 @api_view(["POST"])
 def stuff_list(request):
     filter = StuffListSerializer(request.data)
-    
     stuff_list = stuff.objects.order_by("-sold_count").filter(category_name=filter["category_name"].value)
-    
-
     if filter["price"].value == "asc":
         stuff_list = stuff_list.order_by("price")
     elif filter["price"].value == "desc":
@@ -139,6 +138,7 @@ def stuff_list(request):
         stuff_list = stuff_list.order_by("creation_date")
     elif filter["date"].value == "desc":
         stuff_list = stuff_list.order_by("-creation_date")
+
 
     if filter["lbp"].value != "none":
         stuff_list = [x for x in stuff_list if x.price>filter["lbp"].value]
