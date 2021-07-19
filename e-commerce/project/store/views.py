@@ -20,8 +20,9 @@ import ast
 
 @api_view(['POST'])
 def register(request):
-    request.data = ast.literal_eval(request.body.decode("UTF-8"))
-    serializer = UserSerializer(data=request.data)
+    print(request.body.decode("UTF-8"))
+    data = ast.literal_eval(request.body.decode("UTF-8"))
+    serializer = UserSerializer(data=data)
     print(serializer.is_valid())
     if serializer.is_valid():
         serializer.save()
