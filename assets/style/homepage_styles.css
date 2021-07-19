@@ -108,7 +108,7 @@
     color: rgb(0, 0, 0);
 }
 
-.button__sorting:active {
+.button__sorting--status-clicked {
     background-color: rgb(0, 157, 255);
     color: rgb(255, 255, 255);
 }
