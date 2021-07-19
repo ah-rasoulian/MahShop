@@ -23,7 +23,7 @@ function removeModal(){
 
 function renderModal(status, message){
     let status_message = ""
-    if (status == 1){
+    if (status){
         status_message = "موفق"
     }
     else {
@@ -67,13 +67,8 @@ function renderModal(status, message){
 
 function registerValidation(event){
     event.preventDefault()
-
-    let message = ""
-    let is_available = 0
-    
+ 
     if(formValidation()){
-        is_available = 1
-
         let data = {
             "user_name": document.getElementById("email").value,
             "password": document.getElementById("pass").value.trim(),
@@ -86,33 +81,25 @@ function registerValidation(event){
 
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == XMLHttpRequest.DONE){
-                if(xhttp.responseText != "registeration failed"){
-                    // json_response = JSON.parse(xhttp.responseText)
-                    // localStorage.removeItem("token")
-                    // localStorage.setItem("token", json_response.token)
-                    // logged_in = true
+                let json_response = JSON.parse(xhttp.responseText)
+                if(json_response != "registeration failed"){
+                    localStorage.removeItem("token")
+                    localStorage.setItem("token", json_response.token)
+                    renderModal(true, "خوش آمدید")
                 }
                 else {
-                    is_available = 2
+                    renderModal(false, "نام کاربری تکراری است.")
                 }
             }
         }
 
         xhttp.open("POST", "http://127.0.0.1:8000/register", true)
+        xhttp.setRequestHeader('Content-Type', 'application/json')
         xhttp.send(JSON.stringify(data))
-
-        if (is_available == 1){
-            message = "خوش آمدید"
-        }
-        else {
-            message = "نام کاربری تکراری است."
-        }
     }
     else{
-        message = "همه فیلد‌های فرم الزامی هستند. نام کاربری و رمزعبور باید محدودیت‌ها را ارضا کنند."
+        renderModal(false, "همه فیلد‌های فرم الزامی هستند. نام کاربری و رمزعبور باید محدودیت‌ها را ارضا کنند.")
     }
-
-    renderModal(is_available, message)
 }
 
 function formValidation(){

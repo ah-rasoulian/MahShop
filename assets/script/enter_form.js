@@ -67,8 +67,6 @@ function renderModal(status, message){
 
 function enterValidation(event){
     event.preventDefault()
-    let message = ""
-    let logged_in = false
     
     if(formValidation()){
         let password = document.form.password.value;
@@ -83,29 +81,26 @@ function enterValidation(event){
 
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == XMLHttpRequest.DONE){
-                if(xhttp.responseText != "registeration failed"){
-                    json_response = JSON.parse(xhttp.responseText)
+                let json_response = JSON.parse(xhttp.responseText)
+                if(json_response != "operation failed"){
                     localStorage.removeItem("token")
                     localStorage.setItem("token", json_response.token)
-                    logged_in = true
+                    
+                    renderModal(true, "خوش آمدید")
+                }
+                else {
+                    renderModal(false, "نام کاربری یا رمز عبور معتبر نیست")
                 }
             }
         }
 
         xhttp.open("POST", "http://127.0.0.1:8000/login", true)
+        xhttp.setRequestHeader('Content-Type', 'application/json')
         xhttp.send(JSON.stringify(data))
-        if (logged_in){
-            message = "خوش آمدید"
-        }
-        else {
-            message = "نام کاربری یا رمز عبور معتبر نیست"
-        }
     }
     else{
-        message = "همه فیلد‌های فرم الزامی هستند. نام کاربری و رمزعبور باید محدودیت‌ها را ارضا کنند."
+        renderModal(false, "همه فیلد‌های فرم الزامی هستند. نام کاربری و رمزعبور باید محدودیت‌ها را ارضا کنند.")
     }
-
-    renderModal(logged_in, message)
 }
 
 function formValidation(){
