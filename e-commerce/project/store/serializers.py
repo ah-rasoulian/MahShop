@@ -33,3 +33,15 @@ class StuffListSerializer(serializers.Serializer):
     lbp = serializers.IntegerField(required=False, default=-1)
     ubp = serializers.IntegerField(required=False, default=-1)
     page = serializers.IntegerField(required=False, default=1)
+
+
+
+class PurchaseSerializer(serializers.Serializer):
+    stuff_name= serializers.CharField(max_length=30,required=True)
+    itmes = serializers.IntegerField(default = 1)
+
+
+
+
+class IncreaseSerializer(serializers.Serializer):
+    charge = serializers.IntegerField(default=True)
