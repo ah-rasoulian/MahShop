@@ -11,7 +11,7 @@
     let backgrounds_src = ["url('../assets/img/bg1.jpg')", "url('../assets/img/bg2.jpg')", "url('../assets/img/bg3.jpg')"];
     let slider_interval;
 
-    let products_info = {
+    let sorting_info = {
         "category": "بدون دسته‌بندی",
         "price": "desc",
         "date": "none",
@@ -27,31 +27,58 @@
     }
 
     class Product {
-        constructor(img_src, product_name, product_class, product_price){
-            this.img_src = img_src
-            this.product_name = product_name
-            this.product_class = product_class
-            this.product_price = product_price
+        constructor(stuff_name, category, price, stock, sold_count, creation_date){
+            this.img_src = "../assets/img/product.png"
+            this.stuff_name = stuff_name
+            this.category = category
+            this.price = price
+            this.stock = stock
+            this.sold_count = sold_count
+            this.creation_date = creation_date
         }
     }
 
     let products = []
-    let classifications = []
+    let categories = []
 
     let page_number = 1;
 
     window.onload = async() => {
         initializer();
         reset_slider_interval();
-        draw_classifications(get_classifications());
-        draw_products(get_products());
+
+        get_categories();
+        get_products();
     }
 
-    function get_classifications(){
-        classifications = ['دسته‌ ۱', 'دسته ۲', 'دسته ۳']
+    function get_categories(){
+        let xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                let json_response = JSON.parse(xhttp.responseText)
+                if(json_response.detail){
+                    if(json_response.detail == "Invalid token"){
+                        console.log("invalid token")
+                    }
+                    else {
+                        console.log("Authentication credentials were not provided.")
+                    }
+                }
+                else {
+                    for(let i = 0; i < json_response.length; i++){
+                        categories.add(json_response[i].category_name)
+                    }
+                }
+            }
+            draw_categories()
+        }
+
+        xhttp.open("GET", "http://127.0.0.1:8000/get-cat", true)
+        xhttp.send()
     }
 
-    function draw_classifications(){
+    function draw_categories(){
         let container = document.getElementsByClassName("filter__classification")[0]
         container.innerHTML = ""
 
@@ -66,7 +93,7 @@
             let check_box = document.createElement('input')
             check_box.type = "checkbox"
             check_box.name = classifications[i]
-            check_box.addEventListener('clicked', change_classifications)
+            check_box.addEventListener('clicked', change_categories)
 
             let class_name = document.createElement('p')
             class_name.innerHTML = classifications[i]
@@ -77,7 +104,7 @@
         }
     }
 
-    function change_classifications(event){
+    function change_categories(event){
         console.log(event.target.name)
     }
 
@@ -168,10 +195,28 @@
     }
 
     function get_products(){
-        for(let i = 0; i < 40; i ++){
-            let new_product = new Product(product_json.img_src, product_json.product_name, product_json.product_class, product_json.product_price)
-            products.push(new_product)
+        let xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                let json_response = JSON.parse(xhttp.responseText)
+                for(let i = 0; i < json_response.length; i++){
+                    let new_product = new Product(json_response[i].stuff_name, json_response[i].category, json_response[i].price,
+                        json_response[i].stock, json_response[i].sold_count, json_response[i].creation_date)
+
+                        products.push(new_product)
+                }
+            }
+            draw_products()
         }
+
+        xhttp.open("POST", "http://127.0.0.1:8000/stuff-list", true)
+        xhttp.setRequestHeader('Content-Type', "application/json")
+        xhttp.send(JSON.stringify(sorting_info))
+        // for(let i = 0; i < 40; i ++){
+        //     let new_product = new Product(product_json.img_src, product_json.product_name, product_json.product_class, product_json.product_price)
+        //     products.push(new_product)
+        // }
     }
 
     function draw_products(){

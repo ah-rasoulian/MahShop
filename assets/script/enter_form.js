@@ -278,3 +278,8 @@ document.getElementsByClassName("menu__item--type-main")[0].addEventListener('cl
     let url = ""
     window.location.href = url
 })
+
+document.getElementById("register__button").addEventListener('click', () => {
+    let url = ""
+    window.location.href = url
+})
