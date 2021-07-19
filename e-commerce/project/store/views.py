@@ -94,6 +94,11 @@ def delete_category(request):
     return Response("you don't have premission")
 
 
+@api_view(['GET'])
+def get_cat(request):
+    cat = category.objects.all()
+    serializer = CategorySerializer(cat, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
