@@ -18,19 +18,20 @@
 
     <div id="menu" class="block--vertically-middle">
         <span class="menu__item menu__item--size-large menu__item--color-turquoise">فروشگاه مهشاپ </span>
-        <span class="menu__item">صفحه اول</span>
+        <span class="menu__item menu__item--type-main">صفحه اول</span>
         <span class="menu__item">تماس با ما</span>
         <span class="menu__item">پشتیبانی</span>
-        <span class="menu__item">محصولات</span>
+        <span class="menu__item menu__item--type-products">محصولات</span>
 
         <div class="menu__item dropdown">
-            <!--
-            <button class="login__button">ورود/ثبت نام</button>
-            -->
-            <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
-            <div class="dropdown__content">
-                <a>پروفایل</a>
-                <a>خروج از حساب</a>
+            <button class="button login__button login__button--loggedin-no">ورود/ثبت نام</button>
+            
+            <div class="login__button--loggedin-yes">
+                <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
+                <div class="dropdown__content">
+                    <a>پروفایل</a>
+                    <a>خروج از حساب</a>
+                </div>
             </div>
         </div>
     </div>

@@ -283,3 +283,16 @@ function passValidation(){
     }
     return false;
 }
+
+document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
+    // changin url to home page and navigate to product
+    let url = ""
+    window.location.href = url
+
+    document.getElementsByClassName("container__contents")[0].scrollIntoView()
+})
+
+document.getElementsByClassName("menu__item--type-main")[0].addEventListener('click', () => {
+    let url = ""
+    window.location.href = url
+})

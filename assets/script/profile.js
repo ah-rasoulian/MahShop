@@ -72,8 +72,26 @@ function editValidation(event){
     let succeed = false
     
     if(formValidation()){
-        succeed = true
-        message = "تغییرات با موفقیت انجام شدند."
+        let data = {
+            "user_name": document.getElementById("email").value,
+            "password": document.getElementById("pass").value.trim(),
+            "first_name": document.getElementById("fname").value.trim(),
+            "last_name": document.getElementById("lname").value.trim(),
+            "address": document.getElementById("addr").value
+        }
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function(){
+            if(this.responseText != "you don't have permission"){
+                json_response = JSON.parse(this.responseText)
+                succeed = true
+                message = "تغییرات با موفقیت انجام شدند."
+            }
+        }
+
+        xhttp.open("POST", "http://127.0.0.1/register", true)
+        xhttp.setRequestHeader('Content-Type', 'application/json')
+        xhttp.send(JSON.stringify(data))
     }
     else{
         message = "همه فیلد‌های فرم الزامی هستند. رمزعبور باید محدودیت‌ها را ارضا کند."
@@ -206,4 +224,17 @@ document.getElementsByClassName("info__profile")[0].addEventListener('click', ()
 document.getElementsByClassName("info__receipts")[1].addEventListener('click', () => {
     document.getElementsByClassName("receipt__page")[0].style.display = "none"
     document.getElementsByClassName("content")[0].style.display = "block"
+})
+
+document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
+    // changin url to home page and navigate to product
+    let url = ""
+    window.location.href = url
+
+    document.getElementsByClassName("container__contents")[0].scrollIntoView()
+})
+
+document.getElementsByClassName("menu__item--type-main")[0].addEventListener('click', () => {
+    let url = ""
+    window.location.href = url
 })
