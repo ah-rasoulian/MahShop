@@ -1,4 +1,5 @@
 from re import X
+from django.db.models.query import QuerySet
 
 from rest_framework import serializers
 from rest_framework import permissions
@@ -129,21 +130,24 @@ def stuff_list(request):
     filter = StuffListSerializer(data=request.data)
     print(filter.is_valid())
 
-    print(filter)
-    stuff_list = stuff.objects.order_by("-sold_count").filter(category_name=filter["category_name"].value)
+    stuff_list = QuerySet()
+    cat_name = list(category.objects.filter(category_name__in=filter["category_name"].value))
+    stuff_list = stuff.objects.order_by("-sold_count").filter(category_name__in=cat_name)
 
+    
+    if filter["search_box"].value != 'none':
+        stuff_list = [x for x in stuff_list if filter["search_box"].value in x.stuff_name]
+    print(stuff_list)
 
     if filter["price"].value == "asc":
         stuff_list = stuff_list.order_by("price")
     elif filter["price"].value == "desc":
         stuff_list = stuff_list.order_by("-price")
 
-
     if filter["date"].value == "asc":
         stuff_list = stuff_list.order_by("creation_date")
     elif filter["date"].value == "desc":
         stuff_list = stuff_list.order_by("-creation_date")
-
 
 
     if filter["lbp"].value != -1:

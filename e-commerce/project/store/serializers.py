@@ -27,7 +27,9 @@ class StuffSerializer(serializers.ModelSerializer):
 
 
 class StuffListSerializer(serializers.Serializer):
-    category_name = serializers.CharField(max_length=30, required=False, default="دسته بندی نشده")
+    # category_name = serializers.CharField(max_length=30, required=False, default="دسته بندی نشده")
+    category_name = serializers.ListField(required=False, default=["دسته بندی نشده"])
+    search_box = serializers.CharField(max_length=20, required=False, default="none")
     price = serializers.CharField(max_length=10, required=False, default="none")
     date = serializers.CharField(max_length=10, required=False, default="none")
     lbp = serializers.IntegerField(required=False, default=-1)
