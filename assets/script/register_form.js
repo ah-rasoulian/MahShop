@@ -83,20 +83,22 @@ function registerValidation(event){
         }
 
         let xhttp = new XMLHttpRequest();
-        xhttp.onload = function(){
-            if(this.responseText != "registeration failed"){
-                json_response = JSON.parse(this.responseText)
-                localStorage.removeItem("token")
-                localStorage.setItem("token", json_response.token)
-                logged_in = true
-            }
-            else {
-                is_available = 2
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                if(xhttp.responseText != "registeration failed"){
+                    json_response = JSON.parse(xhttp.responseText)
+                    localStorage.removeItem("token")
+                    localStorage.setItem("token", json_response.token)
+                    logged_in = true
+                }
+                else {
+                    is_available = 2
+                }
             }
         }
 
-        xhttp.open("POST", "http://127.0.0.1/register", true)
-        xhttp.setRequestHeader('Content-Type', 'application/json')
+        xhttp.open("POST", "http://127.0.0.1:8000/register", true)
         xhttp.send(JSON.stringify(data))
 
         if (is_available == 1){

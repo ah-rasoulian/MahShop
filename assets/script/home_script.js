@@ -36,13 +36,49 @@
     }
 
     let products = []
+    let classifications = []
 
     let page_number = 1;
 
     window.onload = async() => {
         initializer();
         reset_slider_interval();
+        draw_classifications(get_classifications());
         draw_products(get_products());
+    }
+
+    function get_classifications(){
+        classifications = ['دسته‌ ۱', 'دسته ۲', 'دسته ۳']
+    }
+
+    function draw_classifications(){
+        let container = document.getElementsByClassName("filter__classification")[0]
+        container.innerHTML = ""
+
+        let header = document.createElement("h2")
+        header.innerHTML = "دسته‌بندی‌ها"
+        container.appendChild(header)
+
+        for(let i = 0; i < classifications.length; i++){
+            let item = document.createElement('div')
+            item.classList.add("classification__item")
+
+            let check_box = document.createElement('input')
+            check_box.type = "checkbox"
+            check_box.name = classifications[i]
+            check_box.addEventListener('clicked', change_classifications)
+
+            let class_name = document.createElement('p')
+            class_name.innerHTML = classifications[i]
+
+            item.appendChild(check_box)
+            item.appendChild(class_name)
+            container.appendChild(item)
+        }
+    }
+
+    function change_classifications(event){
+        console.log(event.target.name)
     }
 
     function initializer(){
@@ -136,7 +172,6 @@
             let new_product = new Product(product_json.img_src, product_json.product_name, product_json.product_class, product_json.product_price)
             products.push(new_product)
         }
-        return products
     }
 
     function draw_products(){

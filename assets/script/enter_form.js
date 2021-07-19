@@ -80,19 +80,20 @@ function enterValidation(event){
         }
 
         let xhttp = new XMLHttpRequest();
-        xhttp.onload = function(){
-            if(this.responseText != "operation failed"){
-                json_response = JSON.parse(this.responseText)
-                localStorage.removeItem("token")
-                localStorage.setItem("token", json_response.token)
-                logged_in = true
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                if(xhttp.responseText != "registeration failed"){
+                    json_response = JSON.parse(xhttp.responseText)
+                    localStorage.removeItem("token")
+                    localStorage.setItem("token", json_response.token)
+                    logged_in = true
+                }
             }
         }
 
-        xhttp.open("POST", "http://127.0.0.1/login", true)
-        xhttp.setRequestHeader('Content-Type', 'application/json')
+        xhttp.open("POST", "http://127.0.0.1:8000/login", true)
         xhttp.send(JSON.stringify(data))
-
         if (logged_in){
             message = "خوش آمدید"
         }

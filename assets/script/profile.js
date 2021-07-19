@@ -73,7 +73,6 @@ function editValidation(event){
     
     if(formValidation()){
         let data = {
-            "user_name": document.getElementById("email").value,
             "password": document.getElementById("pass").value.trim(),
             "first_name": document.getElementById("fname").value.trim(),
             "last_name": document.getElementById("lname").value.trim(),
@@ -81,16 +80,19 @@ function editValidation(event){
         }
 
         let xhttp = new XMLHttpRequest();
-        xhttp.onload = function(){
-            if(this.responseText != "you don't have permission"){
-                json_response = JSON.parse(this.responseText)
-                succeed = true
-                message = "تغییرات با موفقیت انجام شدند."
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                if(xhttp.responseText != "registeration failed"){
+                    json_response = JSON.parse(xhttp.responseText)
+                    localStorage.removeItem("token")
+                    localStorage.setItem("token", json_response.token)
+                    succeed = true
+                }
             }
         }
 
-        xhttp.open("POST", "http://127.0.0.1/edit-info", true)
-        xhttp.setRequestHeader('Content-Type', 'application/json')
+        xhttp.open("POST", "http://127.0.0.1:8000/edit-info", true)
         xhttp.send(JSON.stringify(data))
     }
     else{
