@@ -33,6 +33,7 @@ def register(request):
 
 @api_view(['POST'])
 def login(request):
+    print("hello")
     serializer = UserSerializer(data=request.data)
     print(serializer.initial_data)
     print(serializer.is_valid())
@@ -41,7 +42,7 @@ def login(request):
     data["token"] = token
     return Response(data)
 
-
+# after editing you have to login again.
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def edit_info(request, pk):
@@ -50,73 +51,83 @@ def edit_info(request, pk):
     usr.delete()
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data)
+        return Response("edited succesfully")
+    return Response("you don't have premission")
 
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def add_category(request):
-    serializer = CategorySerializer(data=request.data)
-    print(serializer.is_valid())
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
+    user = request.user
+    if user.is_admin:
+        serializer = CategorySerializer(data=request.data)
+        print(serializer.is_valid())
+        if serializer.is_valid():
+            serializer.save()
+        return Response("category added")
+    return Response("you don't have premission")
 
 
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def update_category(request, pk):
-    cat = category.objects.get(category_name=pk)
-    serializer = CategorySerializer(instance=cat, data=request.data)
-    if serializer.is_valid():
-        cat.delete()
-        serializer.save()
-    return Response(serializer.data)
+    if request.user.is_admin:
+        cat = category.objects.get(category_name=pk)
+        serializer = CategorySerializer(instance=cat, data=request.data)
+        if serializer.is_valid():
+            cat.delete()
+            serializer.save()
+        return Response("category updated")
+    return Response("you don't have premission")
 
 
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated,))
 def delete_category(request):
-    serializer = CategorySerializer(data=request.data)
-    cat = category.objects.get(category_name=serializer.initial_data["category_name"])
-    cat.delete()
-    return Response(serializer.initial_data)
+    if request.user.is_admin:
+        serializer = CategorySerializer(data=request.data)
+        cat = category.objects.get(category_name=serializer.initial_data["category_name"])
+        cat.delete()
+        return Response("category update")
+    return Response("you don't have premission")
 
 
-# def print_cat(request):
-#     for i in category.objects.all():
-#         print(i.category_name)
-#     return HttpResponse('{"hello world ":"hlo"}')
-
+@api_view(['GET'])
+def get_cat(request):
+    cat = category.objects.all()
+    serializer = CategorySerializer(cat, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
-def receipts(resquest):
-    # r = receipt(tracing_code="fs3hfwjkl4j", stuff_name = "kala", user_name = "amjd@jfdsk.jin" , first_name = "amin", last_name = "rahimi", address = "theran", creation_date="2000-02-02", state="انجام شده")
-    # r.save()
-    rec = receipt.objects.all()
-    serializer = ReceiptSerializer(rec, many=True)
-    return Response(serializer.data)
+def receipts(request):
+    if request.user.is_admin:
+        rec = receipt.objects.all()
+        serializer = ReceiptSerializer(rec, many=True)
+        return Response(serializer.data)
+    else:
+        rec = receipt.objects.filter(user_name=request.user.user_name)
+        serializer = ReceiptSerializer(rec, many=True)
+        return Response(serializer.data)    
 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def filtered_receipt(request, pk):
-    rec = receipt.objects.get(tracing_code=pk)
-    serializer = ReceiptSerializer(rec, many=False)
-    return Response(serializer.data)
+    if request.user.is_admin:
+        rec = receipt.objects.filter(tracing_code=pk)
+        serializer = ReceiptSerializer(rec, many=True)
+        return Response(serializer.data)
+    return Response("you don't have premission")
 
-        
+
 @api_view(["POST"])
 def stuff_list(request):
     filter = StuffListSerializer(request.data)
-    
     stuff_list = stuff.objects.order_by("-sold_count").filter(category_name=filter["category_name"].value)
-    
-
     if filter["price"].value == "asc":
         stuff_list = stuff_list.order_by("price")
     elif filter["price"].value == "desc":
@@ -127,6 +138,7 @@ def stuff_list(request):
         stuff_list = stuff_list.order_by("creation_date")
     elif filter["date"].value == "desc":
         stuff_list = stuff_list.order_by("-creation_date")
+
 
     if filter["lbp"].value != "none":
         stuff_list = [x for x in stuff_list if x.price>filter["lbp"].value]

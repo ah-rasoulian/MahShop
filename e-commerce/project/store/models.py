@@ -81,6 +81,8 @@ class receipt(models.Model):
     tracing_code = models.CharField(max_length=20, primary_key=True)
     stuff_name = models.CharField(max_length=40)# there is no need to be ForeignKey
     user_name = models.EmailField(max_length=240)
+    itmes = models.IntegerField(default=1)
+    price = models.IntegerField(default=0)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     address = models.TextField(max_length=100)
