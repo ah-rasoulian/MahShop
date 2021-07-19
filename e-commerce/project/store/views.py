@@ -15,11 +15,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import CategorySerializer, StuffListSerializer, StuffSerializer, UserSerializer, ReceiptSerializer
 from rest_framework.authtoken.models import Token
-
+import ast
 
 
 @api_view(['POST'])
 def register(request):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     serializer = UserSerializer(data=request.data)
     print(serializer.is_valid())
     if serializer.is_valid():
@@ -33,7 +34,7 @@ def register(request):
 
 @api_view(['POST'])
 def login(request):
-    print("hello")
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     serializer = UserSerializer(data=request.data)
     print(serializer.initial_data)
     print(serializer.is_valid())
@@ -46,6 +47,7 @@ def login(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def edit_info(request, pk):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     usr = user.objects.get(user_name=pk)
     serializer = UserSerializer(instance=usr, data=request.data)
     usr.delete()
@@ -59,6 +61,7 @@ def edit_info(request, pk):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def add_category(request):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     user = request.user
     if user.is_admin:
         serializer = CategorySerializer(data=request.data)
@@ -73,6 +76,7 @@ def add_category(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def update_category(request, pk):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     if request.user.is_admin:
         cat = category.objects.get(category_name=pk)
         serializer = CategorySerializer(instance=cat, data=request.data)
@@ -86,6 +90,7 @@ def update_category(request, pk):
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated,))
 def delete_category(request):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     if request.user.is_admin:
         serializer = CategorySerializer(data=request.data)
         cat = category.objects.get(category_name=serializer.initial_data["category_name"])
@@ -96,6 +101,7 @@ def delete_category(request):
 
 @api_view(['GET'])
 def get_cat(request):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     cat = category.objects.all()
     serializer = CategorySerializer(cat, many=True)
     return Response(serializer.data)
@@ -104,6 +110,7 @@ def get_cat(request):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def receipts(request):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     if request.user.is_admin:
         rec = receipt.objects.all()
         serializer = ReceiptSerializer(rec, many=True)
@@ -117,6 +124,7 @@ def receipts(request):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def filtered_receipt(request, pk):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     if request.user.is_admin:
         rec = receipt.objects.filter(tracing_code=pk)
         serializer = ReceiptSerializer(rec, many=True)
@@ -126,6 +134,7 @@ def filtered_receipt(request, pk):
 
 @api_view(["POST"])
 def stuff_list(request):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     filter = StuffListSerializer(request.data)
     stuff_list = stuff.objects.order_by("-sold_count").filter(category_name=filter["category_name"].value)
     if filter["price"].value == "asc":
@@ -151,6 +160,7 @@ def stuff_list(request):
 @api_view(["POST"])
 @permission_classes((IsAuthenticated,))
 def add_stuff(request):
+    request.data = ast.literal_eval(request.body.decode("UTF-8"))
     serializer = StuffSerializer(data=request.data)
     print(serializer.is_valid())
     if serializer.is_valid():
