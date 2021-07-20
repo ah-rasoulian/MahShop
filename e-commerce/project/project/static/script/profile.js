@@ -13,6 +13,8 @@ let users = [
     }
 ]
 
+let user_username;
+
 function removeModal(){
     // find the modal and remove if it exists
     let modal = document.querySelector('.modal')
@@ -70,6 +72,7 @@ function editValidation(event){
     
     if(formValidation()){
         let data = {
+            "user_name": user_username,
             "password": document.getElementById("pass").value.trim(),
             "first_name": document.getElementById("fname").value.trim(),
             "last_name": document.getElementById("lname").value.trim(),
@@ -80,9 +83,13 @@ function editValidation(event){
 
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == XMLHttpRequest.DONE){
-                json_response = JSON.parse(xhttp.responseText)
-                if(xhttp.responseText != "you don't have premission"){
+                let json_response = JSON.parse(xhttp.responseText)
+                if(json_response == "edited succesfully"){
                     renderModal(true, "تغییرات با موفقیت اعمال شد.")
+
+                    localStorage.removeItem('token')
+                    let url = "http://127.0.0.1:8000/enter"
+                    window.location.href = url
                 }
                 else {
                     renderModal(false, "شما مجاز به اعمال تغییرات نیستید.")
@@ -90,8 +97,9 @@ function editValidation(event){
             }
         }
 
-        xhttp.open("POST", "http://127.0.0.1:8000/edit-info", true)
+        xhttp.open("POST", "http://127.0.0.1:8000/edit-info/".concat(user_username), true)
         xhttp.setRequestHeader('Content-Type', 'application/json')
+        xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
         xhttp.send(JSON.stringify(data))
     }
     else{
@@ -194,9 +202,9 @@ function passValidation(){
 
     if(!there_is_error){
         document.getElementById("error__display").style.display = "none"
-        document.querySelector(".form__password").classList.remove("enterform__email--errorexist")
-        document.querySelector("#pass:focus").style.border = "1px solid green";
-        document.querySelector("#pass").style.outline = "none"; 
+        document.getElementById("pass").classList.remove("enterform__email--errorexist")
+        document.getElementById("pass").style.border = "1px solid green";
+        document.getElementById("pass").style.outline = "none"; 
         let div = document.querySelector(".enterform__passerror")
         div.innerHTML = ""       
         return true
@@ -276,7 +284,7 @@ function get_receipts(){
     }
 
     xhttp.open("GET", "http://127.0.0.1:8000/receipts", true)
-    xhttp.setRequestHeader("Authorization", "Token 8652d0bfd90fe03f3168ed22d38e3bf2b77eaba6")
+    xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
     xhttp.send()
 }
 
@@ -325,3 +333,72 @@ function create_reciept(tracing_code, stuff_name, price, address){
 
     return receipt
 }
+
+document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
+    // changin url to home page and navigate to product
+    let url = "http://127.0.0.1:8000/main#container__contents"
+    window.location.href = url
+    document.getElementsByClassName("container__contents")[0].scrollIntoView()
+})
+
+document.getElementsByClassName("menu__item--type-main")[0].addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
+
+document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/enter"
+    window.location.href = url
+})
+
+document.getElementById("exit").addEventListener('click', () => {
+    localStorage.removeItem('token')
+    
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
+
+document.getElementById("profile").addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/profile"
+    window.location.href = url
+})
+
+function athenticate(){
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if (json_response.detail){
+                if (json_response.detail == 'Invalid token.'){
+                    console.log('Invalid token')
+                }
+            }
+            else {
+                user_username = json_response.user_name
+                show_info(json_response.first_name, json_response.last_name, json_response.address)
+            }
+        }
+    }
+
+    xhttp.open("GET", "http://127.0.0.1:8000/user-info", true)
+    xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+    xhttp.send()
+}
+
+function show_info(name, last_name, address){
+    let button = document.getElementsByClassName('login__button')[1]
+    button.innerHTML = name
+    let arrow = document.createElement('i')
+    arrow.className = 'arrow down'
+    button.appendChild(arrow)
+
+    document.getElementsByClassName("login__button--loggedin-no")[0].style.display = "none"
+    document.getElementsByClassName("login__button--loggedin-yes")[0].style.display = "block"
+
+    document.getElementById('fname').placeholder = name
+    document.getElementById('lname').placeholder = last_name
+    document.getElementById('addr').placeholder = address
+}
+
+athenticate()

@@ -82,10 +82,14 @@ function registerValidation(event){
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == XMLHttpRequest.DONE){
                 let json_response = JSON.parse(xhttp.responseText)
+                console.log(json_response)
                 if(json_response != "registeration failed"){
                     localStorage.removeItem("token")
                     localStorage.setItem("token", json_response.token)
                     renderModal(true, "خوش آمدید")
+
+                    let url = "http://127.0.0.1:8000/main"
+                    window.location.href = url
                 }
                 else {
                     renderModal(false, "نام کاربری تکراری است.")
@@ -275,13 +279,64 @@ function passValidation(){
 
 document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
     // changin url to home page and navigate to product
-    let url = ""
+    let url = "http://127.0.0.1:8000/main#container__contents"
     window.location.href = url
-
     document.getElementsByClassName("container__contents")[0].scrollIntoView()
 })
 
 document.getElementsByClassName("menu__item--type-main")[0].addEventListener('click', () => {
-    let url = ""
+    let url = "http://127.0.0.1:8000/main"
     window.location.href = url
 })
+
+document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/enter"
+    window.location.href = url
+})
+
+document.getElementById("exit").addEventListener('click', () => {
+    localStorage.removeItem('token')
+    
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
+
+document.getElementById("profile").addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/profile"
+    window.location.href = url
+})
+
+function athenticate(){
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if (json_response.detail){
+                if (json_response.detail == 'Invalid toke.'){
+                    console.log('Invalid token')
+                }
+            }
+            else {
+                show_name(json_response.first_name)
+            }
+        }
+    }
+
+    xhttp.open("GET", "http://127.0.0.1:8000/user-info", true)
+    xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+    xhttp.send()
+}
+
+function show_name(name){
+    let button = document.getElementsByClassName('login__button')[1]
+    button.innerHTML = name
+    let arrow = document.createElement('i')
+    arrow.className = 'arrow down'
+    button.appendChild(arrow)
+
+    document.getElementsByClassName("login__button--loggedin-no")[0].style.display = "none"
+    document.getElementsByClassName("login__button--loggedin-yes")[0].style.display = "block"
+}
+
+athenticate()

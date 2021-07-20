@@ -1,11 +1,10 @@
 <!DOCTYPE html>
+{% load static%}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/
-    ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link href="{% static 'style/basic_styles.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'style/arrow_styles.css' %}" rel="stylesheet" type="text/css">
@@ -13,11 +12,10 @@
     <link href="{% static 'style/profile.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'style/modal.css' %}" rel="stylesheet" type="text/css">
     <script src="{% static 'script/profile.js'%}" defer></script>
-    
+
     <title>profile</title>
 </head>
 <body>
-
     <div id="menu" class="block--vertically-middle">
         <span class="menu__item menu__item--size-large menu__item--color-turquoise">فروشگاه مهشاپ </span>
         <span class="menu__item menu__item--type-main">صفحه اول</span>
@@ -29,10 +27,10 @@
             <button class="button login__button login__button--loggedin-no">ورود/ثبت نام</button>
             
             <div class="login__button--loggedin-yes">
-                <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
+                <button class="button login__button"></button>
                 <div class="dropdown__content">
-                    <a>پروفایل</a>
-                    <a>خروج از حساب</a>
+                    <a id="profile">پروفایل</a>
+                    <a id="exit">خروج از حساب</a>
                 </div>
             </div>
         </div>
@@ -56,20 +54,20 @@
                 <div class="info__receipts">رسیدها</div>
                 <div class="info__profile info__receipts--active">پروفایل</div>
             </div>
-            <form action="" class="form" name="form" id="formid">
+            <form class="form" name="form" id="formid" autocomplete="off">
                 <div class="form__element name_info">
                     <div class="form__element__div">
-                        <input class="form__input form__fname" type="text" placeholder="نام خود را وارد کنید"  id="fname">
+                        <input class="form__input form__fname" type="text" id="fname" autocomplete="off">
                         <label class="form__label form__fname" for="fname">نام</label>
                     </div>
                     <div class="form__element__div">
-                        <input class="form__input form__lname" type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname">
+                        <input class="form__input form__lname" type="text" id="lname" autocomplete="off" >
                         <label class="form__label form__lname" for="lname">نام خانوادگی</label>
                     </div>
                 </div>
                 <div class="form__element email_pass ">
                     <div class="form__element__div">
-                        <input class="form__input form__password" type="password" minlength="6" placeholder="رمز خود را وارد کنید"  id="pass">
+                        <input class="form__input form__password" type="password"  id="pass" autocomplete="new-password">
                         <label class="form__label form__password" for="pass">رمز عبور</label>
                     </div>
                 </div>
@@ -77,10 +75,10 @@
                     <div class="enterform__passerror"></div>
                 </div>
                 <div class="form__element form__element__div form__element--margin-button" >
-                    <textarea class="form__textarea form__address" placeholder="آدرس خود را وارد کنید"  id="addr"></textarea>
+                    <textarea class="form__textarea form__address"  id="addr"></textarea>
                     <label class="form__label form__address" for="addr">آدرس</label>
                 </div>
-                <button class="form__btn" type="submit" form="formid">ثبت نام</button>
+                <button class="form__btn" type="submit" form="formid">تغییر اطلاعات</button>
             </form>
         </div>
 
@@ -103,6 +101,5 @@
     <div id="footer">
         <p>تمامی حقوق برای توسعه‌دهندگان، امیرحسین رسولیان و محمدامین رحیمی، محفوظ است</p>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>

@@ -86,7 +86,11 @@ function enterValidation(event){
                     localStorage.removeItem("token")
                     localStorage.setItem("token", json_response.token)
                     
+                    console.log(localStorage.token)
                     renderModal(true, "خوش آمدید")
+                    
+                    let url = "http://127.0.0.1:8000/main"
+                    window.location.href = url
                 }
                 else {
                     renderModal(false, "نام کاربری یا رمز عبور معتبر نیست")
@@ -194,8 +198,8 @@ function emailValidation(){
 
     if(!there_is_error){
         document.querySelector(".enterform__email").classList.remove("enterform__email--errorexist")
-        document.querySelector("#email:focus").style.border = "1px solid green";
-        document.querySelector("#email").style.outline = "none"; 
+        document.getElementById("email").style.border = "1px solid green";
+        document.getElementById("email").style.outline = "none"; 
         let div = document.querySelector(".enterform__emailerror")
         div.innerHTML = ""       
         return true
@@ -247,8 +251,8 @@ function passValidation(){
 
     if(!there_is_error){
         document.querySelector(".enterform__password").classList.remove("enterform__email--errorexist")
-        document.querySelector("#pass:focus").style.border = "1px solid green";
-        document.querySelector("#pass").style.outline = "none"; 
+        document.getElementById("pass").style.border = "1px solid green";
+        document.getElementById("pass").style.outline = "none"; 
         let div = document.querySelector(".enterform__passerror")
         div.innerHTML = ""       
         return true
@@ -268,18 +272,69 @@ function passValidation(){
 
 document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
     // changin url to home page and navigate to product
-    let url = ""
+    let url = "http://127.0.0.1:8000/main#container__contents"
     window.location.href = url
-
     document.getElementsByClassName("container__contents")[0].scrollIntoView()
 })
 
 document.getElementsByClassName("menu__item--type-main")[0].addEventListener('click', () => {
-    let url = ""
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
+
+document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/enter"
+    window.location.href = url
+})
+
+document.getElementById("exit").addEventListener('click', () => {
+    localStorage.removeItem('token')
+    
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
+
+document.getElementById("profile").addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/profile"
     window.location.href = url
 })
 
 document.getElementById("register__button").addEventListener('click', () => {
-    let url = ""
+    let url = "http://127.0.0.1:8000/register-form"
     window.location.href = url
 })
+
+function athenticate(){
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if (json_response.detail){
+                if (json_response.detail == 'Invalid token.'){
+                    console.log('Invalid token')
+                }
+            }
+            else {
+                show_name(json_response.first_name)
+            }
+        }
+    }
+
+    xhttp.open("GET", "http://127.0.0.1:8000/user-info", true)
+    xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+    xhttp.send()
+}
+
+function show_name(name){
+    let button = document.getElementsByClassName('login__button')[1]
+    button.innerHTML = name
+    let arrow = document.createElement('i')
+    arrow.className = 'arrow down'
+    button.appendChild(arrow)
+
+    document.getElementsByClassName("login__button--loggedin-no")[0].style.display = "none"
+    document.getElementsByClassName("login__button--loggedin-yes")[0].style.display = "block"
+}
+
+athenticate()
