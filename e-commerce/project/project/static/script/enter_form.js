@@ -198,8 +198,8 @@ function emailValidation(){
 
     if(!there_is_error){
         document.querySelector(".enterform__email").classList.remove("enterform__email--errorexist")
-        document.querySelector("#email:focus").style.border = "1px solid green";
-        document.querySelector("#email").style.outline = "none"; 
+        document.getElementById("email").style.border = "1px solid green";
+        document.getElementById("email").style.outline = "none"; 
         let div = document.querySelector(".enterform__emailerror")
         div.innerHTML = ""       
         return true
@@ -251,8 +251,8 @@ function passValidation(){
 
     if(!there_is_error){
         document.querySelector(".enterform__password").classList.remove("enterform__email--errorexist")
-        document.querySelector("#pass:focus").style.border = "1px solid green";
-        document.querySelector("#pass").style.outline = "none"; 
+        document.getElementById("pass").style.border = "1px solid green";
+        document.getElementById("pass").style.outline = "none"; 
         let div = document.querySelector(".enterform__passerror")
         div.innerHTML = ""       
         return true
@@ -311,7 +311,7 @@ function athenticate(){
         if (xhttp.readyState == XMLHttpRequest.DONE){
             let json_response = JSON.parse(xhttp.responseText)
             if (json_response.detail){
-                if (json_response.detail == 'Invalid toke.'){
+                if (json_response.detail == 'Invalid token.'){
                     console.log('Invalid token')
                 }
             }
