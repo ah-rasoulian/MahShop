@@ -8,7 +8,7 @@
     let product_container = document.getElementsByClassName("container__contents--position-left")[0]
 
     let hearoheader_background_index = 0;
-    let backgrounds_src = ["url('../assets/img/bg1.jpg')", "url('../assets/img/bg2.jpg')", "url('../assets/img/bg3.jpg')"];
+    let backgrounds_src = ["url('http://127.0.0.1:8000/static/img/bg1.jpg')", "url('http://127.0.0.1:8000/static/img/bg2.jpg')", "url('http://127.0.0.1:8000/static/img/bg3.jpg')"];
     let slider_interval;
 
     let sorting_info = {
@@ -19,16 +19,9 @@
         search_box: ""
     }
 
-    let product_json = {
-        "img_src": "../assets/img/product.png",
-        "product_name": "کالا",
-        "product_class": "بدون دسته‌بندی",
-        "product_price": "10000"
-    }
-
     class Product {
         constructor(stuff_name, category_name, price, stock, sold_count, creation_date){
-            this.img_src = "../assets/img/product.png"
+            this.img_src = "url('http://127.0.0.1:8000/static/img/product.png')"
             this.stuff_name = stuff_name
             this.category_name = category_name
             this.price = price
