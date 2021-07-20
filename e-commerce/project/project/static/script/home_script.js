@@ -386,7 +386,7 @@
 
         // render the modal with child on DOM
         modal.appendChild(modal_content)
-        document.getElementById('container__contents').appendChild(modal)
+        document.body.appendChild(modal)
     
         modal.addEventListener('click', event => {
             if (event.target.className === 'modal') {

@@ -14,6 +14,7 @@ let users = [
 ]
 
 let user_username;
+let is_authenticated = false;
 
 function removeModal(){
     // find the modal and remove if it exists
@@ -379,7 +380,8 @@ function athenticate(){
             }
             else {
                 user_username = json_response.user_name
-                show_info(json_response.first_name, json_response.last_name, json_response.address)
+                is_authenticated = true
+                show_info(json_response.first_name, json_response.last_name, json_response.address, json_response.charge)
             }
         }
     }
@@ -389,7 +391,7 @@ function athenticate(){
     xhttp.send()
 }
 
-function show_info(name, last_name, address){
+function show_info(name, last_name, address, charge){
     let button = document.getElementsByClassName('login__button')[1]
     button.innerHTML = name
     let arrow = document.createElement('i')
@@ -402,6 +404,111 @@ function show_info(name, last_name, address){
     document.getElementById('fname').placeholder = name
     document.getElementById('lname').placeholder = last_name
     document.getElementById('addr').placeholder = address
+
+    document.getElementById('charge').innerHTML = charge
+    document.getElementById('user_firstname').innerHTML = name
 }
 
 athenticate()
+document.getElementById("charge__add").addEventListener('click', () => {
+    if(is_authenticated){
+        renderModal2(true)
+    }
+    else{
+        renderModal2(false)
+    }
+})
+
+function renderModal2(status){
+    let status_message;
+    if (status){
+        status_message = "افزایش موجودی"
+    }
+    else{
+        status_message = "ابتدا وارد شوید"
+    }
+
+    // create the background modal div
+    let modal = document.createElement('div')
+    modal.classList.add('modal')
+
+    // create the inner modal div with appended argument
+    let modal_content = document.createElement('div')
+    modal_content.classList.add('modal__content')
+
+    let exit_button = document.createElement('button')
+    exit_button.classList.add("modal_content--type-exit")
+    exit_button.addEventListener('click', removeModal)
+    exit_button.innerHTML = "X"
+    modal_content.appendChild(exit_button)
+
+    let header = document.createElement('h1')
+    header.classList.add('modal__content--type-header')
+    header.innerHTML = status_message
+    modal_content.appendChild(header)
+    
+    if (status){
+        let content_container = document.createElement('div')
+        content_container.classList.add('modal__content--type-content')
+        modal_content.appendChild(content_container)
+
+        let increase_amount = document.createElement('div')
+        increase_amount.classList.add('number--to-buy')
+
+        let count = document.createElement('input')
+        count.id = "charge_counts"
+        count.type = "number"
+        count.step = 1
+        count.min = 1
+
+        let increase_amount_lable = document.createElement('p')
+        increase_amount_lable.innerHTML = "چقدر میخواهید افزایش دهید؟ "
+
+        increase_amount.appendChild(increase_amount_lable)
+        increase_amount.appendChild(count)
+        content_container.appendChild(increase_amount)
+
+        let increse_button = document.createElement('button')
+        increse_button.className = "button--size-small"
+        increse_button.innerHTML = "اضافه کن"
+        increse_button.addEventListener('click', increase_charge)
+
+        content_container.appendChild(increse_button)
+    }
+
+    // render the modal with child on DOM
+    modal.appendChild(modal_content)
+    document.body.appendChild(modal)
+
+    modal.addEventListener('click', event => {
+        if (event.target.className === 'modal') {
+          removeModal()
+        }
+    })
+}
+
+function increase_charge(){
+    let count = document.getElementById('charge_counts').value
+
+    let data = {
+        "charge": count,
+    }
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if (json_response == "successfull"){
+                removeModal()
+                renderModal(true, "افزایش موجودی با موفقیت انجام شد")
+                setTimeout(() => { location.reload() }, 1000);
+            }
+        }
+    }
+
+    xhttp.open("POST", "http://127.0.0.1:8000/increase-charge", true)
+    xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+    xhttp.setRequestHeader('Content-Type', "application/json")
+    xhttp.send(JSON.stringify(data))
+}

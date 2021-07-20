@@ -28,7 +28,7 @@ def register(request):
         token = Token.objects.get(user=user.objects.get(user_name=serializer.data["user_name"])).key
         data = {}
         data["token"] = token
-        return HttpResponse(data)
+        return Response(data)
     return Response("registeration failed")
 
 
@@ -207,7 +207,7 @@ def increase_charge(request):
 @permission_classes((IsAuthenticated,))
 def increase_charge(request):
     serializer = PurchaseSerializer(data=request.data)
-    request.user.charge = request.user.charge + serializer.initial_data["charge"]
+    request.user.charge = request.user.charge + int(serializer.initial_data["charge"])
     request.user.save()
     return Response("successfull")
 
@@ -237,10 +237,10 @@ def register_form(request):
 
 
 @api_view(["GET"])
-@permission_classes((IsAuthenticated,))
+# @permission_classes((IsAuthenticated,))
 def profile(request):
-    if request.user.is_admin:
-        return render(request, "admin_profile")
+    # if request.user.is_admin:
+    #     return render(request, "admin_profile")
     return render(request, "profile.html")
 
 
