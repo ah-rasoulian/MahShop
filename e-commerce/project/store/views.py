@@ -132,7 +132,11 @@ def stuff_list(request):
 
     stuff_list = QuerySet()
     cat_name = list(category.objects.filter(category_name__in=filter["category_name"].value))
-    stuff_list = stuff.objects.order_by("-sold_count").filter(category_name__in=cat_name)
+
+    if filter["sold_count"].value == 'desc':
+        stuff_list = stuff.objects.order_by("-sold_count").filter(category_name__in=cat_name)
+    else:
+        stuff_list = stuff.objects.filter(category_name__in=cat_name)
 
     
     if filter["search_box"].value != 'none':

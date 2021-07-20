@@ -193,10 +193,8 @@
 
     slider_right.onclick = async() => {
         hearoheader_background_index = (hearoheader_background_index + 1) % backgrounds_src.length;
-
         hearoheader.style.backgroundImage = backgrounds_src[hearoheader_background_index];
         document.getElementById("clock_image").style.visibility = 'hidden';
-
         reset_slider_interval();
     }
 
