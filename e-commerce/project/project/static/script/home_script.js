@@ -12,7 +12,7 @@
     let slider_interval;
 
     let sorting_info = {
-        category: [],
+        category_name: [],
         sold_count: "desc",
         price: "none",
         date: "none",
@@ -21,7 +21,7 @@
 
     class Product {
         constructor(stuff_name, category_name, price, stock, sold_count, creation_date){
-            this.img_src = "url('http://127.0.0.1:8000/static/img/product.png')"
+            this.img_src = 'http://127.0.0.1:8000/static/img/product.png'
             this.stuff_name = stuff_name
             this.category_name = category_name
             this.price = price
@@ -100,12 +100,12 @@
 
     function change_categories(event){
         if(event.target.checked){
-            sorting_info.category.push(event.target.name)
+            sorting_info.category_name.push(event.target.name)
         }
         else {
-            const index = sorting_info.category.indexOf(event.target.name)
+            const index = sorting_info.category_name.indexOf(event.target.name)
             if (index > -1){
-                sorting_info.category.splice(index, 1)
+                sorting_info.category_name.splice(index, 1)
             }
         }
         get_products()
@@ -116,6 +116,41 @@
         for (let i = 0; i < sorting_buttons.length; i++){
             sorting_buttons.item(i).addEventListener('click', change_sorting_button)
         }
+
+        athenticate()
+    }
+
+    function athenticate(){
+        let xhttp = new XMLHttpRequest()
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                let json_response = JSON.parse(xhttp.responseText)
+                if (json_response.detail){
+                    if (json_response.detail == 'Invalid toke.'){
+                        console.log('Invalid token')
+                    }
+                }
+                else {
+                    show_name(json_response.first_name)
+                }
+            }
+        }
+
+        xhttp.open("GET", "http://127.0.0.1:8000/user-info", true)
+        xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+        xhttp.send()
+    }
+
+    function show_name(name){
+        let button = document.getElementsByClassName('login__button')[1]
+        button.innerHTML = name
+        let arrow = document.createElement('i')
+        arrow.className = 'arrow down'
+        button.appendChild(arrow)
+
+        document.getElementsByClassName("login__button--loggedin-no")[0].style.display = "none"
+        document.getElementsByClassName("login__button--loggedin-yes")[0].style.display = "block"
     }
 
     function change_sorting_button(event){
@@ -240,7 +275,16 @@
         page_number = 1
 
         let data = {}
-        if(sorting_info.category)
+        if(sorting_info.category_name.length > 0){
+            data.category_name = sorting_info.category_name
+        }
+        if (sorting_info.search_box != ""){
+            data.search_box = sorting_info.search_box
+        }
+        data.sold_count = sorting_info.sold_count
+        data.price = sorting_info.price
+        data.date = sorting_info.date
+        
         let xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = () => {
@@ -258,7 +302,7 @@
 
         xhttp.open("POST", "http://127.0.0.1:8000/stuff-list", true)
         xhttp.setRequestHeader('Content-Type', "application/json")
-        xhttp.send(JSON.stringify(sorting_info))
+        xhttp.send(JSON.stringify(data))
 
         // for(let i = 0; i < 40; i ++){
         //     let new_product = new Product(product_json.img_src, product_json.product_name, product_json.product_class, product_json.product_price)
@@ -333,16 +377,27 @@
     }
 
     document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
+        // changin url to home page and navigate to product
         document.getElementsByClassName("container__contents")[0].scrollIntoView()
     })
     
     document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
-        let url = ""
+        let url = "http://127.0.0.1:8000/enter"
         window.location.href = url
     })
 
     document.getElementsByClassName("search__button")[0].addEventListener('click', () => {
         sorting_info.search_box = document.getElementsByClassName("search__input")[0].value
         get_products()
+    })
+
+    document.getElementById("exit").addEventListener('click', () => {
+        localStorage.removeItem('token')
+        location.reload()
+    })
+
+    document.getElementById("profile").addEventListener('click', () => {
+        let url = "http://127.0.0.1:8000/profile"
+        window.location.href = url
     })
 })()
