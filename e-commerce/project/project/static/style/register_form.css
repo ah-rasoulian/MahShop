@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+* {
+    box-sizing: border-box;
+} 
+
+
+#container {
+    justify-content: center;
+    background-color: #fff;
+} 
+
+.content {
+    max-width: 600px;
+    width: 50%;
+    min-width: 300px;
+    margin: 0 auto;
+}
+
+.content__title {
+    margin-bottom: 30px;
+}
+
+.title__text--allign{
+    text-align: center;
+    margin: 0;
+}
+
+.title__text--color{
+    color: #05ECEB;
+
+}
+
+
+.content__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+
+.registerform__element {
+    width: 100%;
+    min-height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.registerform__element__div {
+    display: grid;
+    column-gap: 0;
+    grid-template-columns:  10fr 100px 10px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.registerform__element--margin-button {
+    margin-bottom: 30px;
+}
+
+.registerform__element__input{
+    display: inline-block;
+    width: 100%;
+    border: none;
+    padding: 0%;
+    margin: 0;
+    border-radius: 7px 0px 0px 7px;
+}
+
+
+
+.registerform__element__textarea{
+    display: inline-block;
+    width: 100%;
+    border: none;
+    padding: 0%;
+    margin: 0;
+    border-radius: 7px 0px 0px 7px;
+}
+
+
+
+.registerform__element__label  {
+    color: white;
+    border-radius: 0px 7px 7px 0px;
+    display: inline-block;
+    margin: 0;
+    width: 100%;
+    background-color: #05ECEB;
+    padding: 0 6px;
+    text-align: center;
+    line-height: 30px;
+}
+
+
+.registerform__btn {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    background-color: orange;
+}
+
+.enterform__email--errorexist{
+    margin-bottom: 0px;
+}
+
+.enterform__emailerror p{
+    text-align: right;
+    color: red;
+    font-size: 10px;
+    line-height: 14px;
+    margin: 5px;
+}
+
+
+.enterform__password--errorexist{
+    margin-bottom: 0px;
+}
+
+.enterform__passerror p{
+    text-align: right;
+    color: red;
+    font-size: 10px;
+    line-height: 14px;
+    margin: 5px;
+    margin-bottom: 5px;
+}
+
+#error__display {
+    display: none;
+}

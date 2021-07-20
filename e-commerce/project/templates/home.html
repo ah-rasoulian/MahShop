@@ -1,0 +1,80 @@
+<!--Internet Engineering cousre final project at Amirkabir University of Technology-->
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="fa-IR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Amirhossein Rasoulian Mashhadi">
+        <meta name="author" content="Mohammad Amin Rahimi">
+        <meta name="description" content="A Shopping Website">
+
+        <title>Mah Shop</title>
+        <!--apply styles-->
+        <link href="{% static 'style/basic_styles.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'style/arrow_styles.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'style/homepage_styles.css' %}" rel="stylesheet" type="text/css">
+        <link href='http://www.fontonline.ir/css/BYekan.css' rel='stylesheet' type='text/css'>
+        <script src="{% static 'script/home_script.js'%}" defer></script>
+    </head>
+
+    <body>
+        <div id="menu" class="block--vertically-middle">
+            <span class="menu__item menu__item--size-large menu__item--color-turquoise">فروشگاه مهشاپ </span>
+            <span class="menu__item menu__item--type-main">صفحه اول</span>
+            <span class="menu__item">تماس با ما</span>
+            <span class="menu__item">پشتیبانی</span>
+            <span class="menu__item menu__item--type-products">محصولات</span>
+
+            <div class="menu__item dropdown">
+                <button class="button login__button login__button--loggedin-no">ورود/ثبت نام</button>
+                
+                <div class="login__button--loggedin-yes">
+                    <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
+                    <div class="dropdown__content">
+                        <a>پروفایل</a>
+                        <a>خروج از حساب</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="container">
+            <div class="container__hearoheader">
+                <div class="container__hearoheader__left">
+                    <i class="arrow left" id="slider_left"></i>
+                </div>
+                
+                <div class="container__hearoheader__center">
+                    <h1>..در محصولات سایت جستجو کنید</h1>
+                    <input class="search__input" type="search" placeholder="نام محصول خود را وارد کنید..">
+                    <button class="button search__button">جستجو کنید</button>
+                    <img id="clock_image" src="{% static 'img/clock.png'%} ">
+                </div>
+
+                <div class="container__hearoheader__right">
+                    <i class="arrow right" id="slider_right"></i>
+                </div>
+            </div>
+
+            <div class="container__box container__box__sorting">
+                <p>مرتب‌‌ سازی بر اساس:</p>
+                <button class="button--size-small button__sorting button__sorting--status-clicked" name="sold_count">بیشترین فروش</button>
+                <button class="button--size-small button__sorting" name="price">قیمت <i id="sorting--order-price"></i></button>
+                <button class="button--size-small button__sorting" name="date">تاریخ ایجاد</button>
+            </div>
+
+            <div class="container__contents">
+                <div class="container__contents--position-left"></div>
+
+                <div class="container__contents--position-right">
+                    <div class="container__box filter__classification"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <p>تمامی حقوق برای توسعه‌دهندگان، امیرحسین رسولیان و محمدامین رحیمی، محفوظ است</p>
+        </div>
+    </body>
+</html>

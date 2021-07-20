@@ -216,3 +216,9 @@ def user_info(request):
     serializer = us(request.user)
     print(serializer.data)
     return Response(serializer.data)
+
+
+
+@api_view(["GET"])
+def main_page(request):
+    return render(request, "home.html")
