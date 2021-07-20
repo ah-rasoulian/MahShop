@@ -19,4 +19,8 @@ urlpatterns = [
     path("increase-charge", views.increase_charge, name="increase-charge"),
     path("user-info", views.user_info, name="user-info"),
     path("main", views.main_page, name="main-page"),
+    path("enter", views.enter_form, name="enter-form"),
+    path("register", views.register_form, name="register-form"),
+    path("profile", views.profile, name="profile"),
+
 ]

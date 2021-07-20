@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'style/basic_styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/arrow_styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/homepage_styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/register_form.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/modal.css' %}" rel="stylesheet" type="text/css">
+    <script src="{% static 'script/register_form.js'%}" defer></script>
+
+    <title>register</title>
+</head>
+<body>
+
+    <div id="menu" class="block--vertically-middle">
+        <span class="menu__item menu__item--size-large menu__item--color-turquoise">فروشگاه مهشاپ </span>
+        <span class="menu__item menu__item--type-main">صفحه اول</span>
+        <span class="menu__item">تماس با ما</span>
+        <span class="menu__item">پشتیبانی</span>
+        <span class="menu__item menu__item--type-products">محصولات</span>
+
+        <div class="menu__item dropdown">
+            <button class="button login__button login__button--loggedin-no">ورود/ثبت نام</button>
+            
+            <div class="login__button--loggedin-yes">
+                <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
+                <div class="dropdown__content">
+                    <a>پروفایل</a>
+                    <a>خروج از حساب</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <div class="content">
+            <div class="content__title ">
+                <h4 class="title__text--color title__text--allign"> فروشگاه - ثبت‌نام</h4>
+            </div>
+            <form action="" name="form" class="registerform content__form" id="formid">
+                <div class="registerform__element ">
+                    <div class="registerform__element__div" >
+                        <input class="registerform__element__input registerform__element__fname" type="text" placeholder="نام خود را وارد کنید"  id="fname">
+                        <label class="registerform__element__label registerform__element__fname" for="fname">نام</label>
+                    </div>
+                    <div class="registerform__element__div">
+                        <input class="registerform__element__input registerform__element__lname" type="text" placeholder="نام خانوادگی خود را وارد کنید"  id="lname">
+                        <label class="registerform__element__label registerform__element__lname" for="lname">نام خانوادگی</label>
+                    </div>
+                </div>
+                <div class="registerform__element">
+                    <div class="registerform__element__div" >
+                        <input class="registerform__element__input registerform__element__email" type="email" placeholder="ایمیل خود را وارد کنید"  id="email">
+                        <label class="registerform__element__label registerform__element__email" for="email">ایمیل</label>
+                    </div>
+                    <div class="registerform__element__div" >
+                        <input class="registerform__element__input registerform__element__password" type="password" placeholder="رمز خود را وارد کنید" minlength="6" id="pass">
+                        <label class="registerform__element__label registerform__element__password" for="pass">رمز عبور</label>
+                    </div>
+                </div>
+                <div class="registerform__element" id="error__display">
+                    <div class="enterform__emailerror"></div>
+                    <div class="enterform__passerror"></div>
+                </div>
+                <div class="registerform__element registerform__element__div registerform__element--margin-button" >
+                    <textarea class="registerform__element__textarea registerform__element__address" placeholder="آدرس خود را وارد کنید"  id="addr"></textarea>
+                    <label class="registerform__element__label registerform__element__address" class="address__labe" for="addr">آدرس</label>
+                </div>
+                <button class="registerform__btn" form="formid" type="submit" >ثبت نام</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        <p>تمامی حقوق برای توسعه‌دهندگان، امیرحسین رسولیان و محمدامین رحیمی، محفوظ است</p>
+    </div>
+</body>
+</html>
