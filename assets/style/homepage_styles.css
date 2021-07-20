@@ -236,3 +236,7 @@
 .page__number__current {
     color: red;
 }
+
+#sorting--order-price{
+    display: none;
+}

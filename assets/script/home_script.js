@@ -12,11 +12,11 @@
     let slider_interval;
 
     let sorting_info = {
-        "category": "بدون دسته‌بندی",
-        "price": "desc",
-        "date": "none",
-        "lbp": "none",
-        "ubp": "none"
+        category: [],
+        sold_count: "desc",
+        price: "none",
+        date: "none",
+        search_box: ""
     }
 
     let product_json = {
@@ -27,10 +27,10 @@
     }
 
     class Product {
-        constructor(stuff_name, category, price, stock, sold_count, creation_date){
+        constructor(stuff_name, category_name, price, stock, sold_count, creation_date){
             this.img_src = "../assets/img/product.png"
             this.stuff_name = stuff_name
-            this.category = category
+            this.category_name = category_name
             this.price = price
             this.stock = stock
             this.sold_count = sold_count
@@ -67,7 +67,7 @@
                 }
                 else {
                     for(let i = 0; i < json_response.length; i++){
-                        categories.add(json_response[i].category_name)
+                        categories.push(json_response[i].category_name)
                     }
                 }
             }
@@ -86,17 +86,17 @@
         header.innerHTML = "دسته‌بندی‌ها"
         container.appendChild(header)
 
-        for(let i = 0; i < classifications.length; i++){
+        for(let i = 0; i < categories.length; i++){
             let item = document.createElement('div')
             item.classList.add("classification__item")
 
             let check_box = document.createElement('input')
             check_box.type = "checkbox"
-            check_box.name = classifications[i]
-            check_box.addEventListener('clicked', change_categories)
+            check_box.name = categories[i]
+            check_box.addEventListener('change', change_categories)
 
             let class_name = document.createElement('p')
-            class_name.innerHTML = classifications[i]
+            class_name.innerHTML = categories[i]
 
             item.appendChild(check_box)
             item.appendChild(class_name)
@@ -105,7 +105,16 @@
     }
 
     function change_categories(event){
-        console.log(event.target.name)
+        if(event.target.checked){
+            sorting_info.category.push(event.target.name)
+        }
+        else {
+            const index = sorting_info.category.indexOf(event.target.name)
+            if (index > -1){
+                sorting_info.category.splice(index, 1)
+            }
+        }
+        get_products()
     }
 
     function initializer(){
@@ -116,12 +125,50 @@
     }
 
     function change_sorting_button(event){
-        if (event.target.classList.contains("button__sorting--status-clicked")){
-            event.target.classList.remove("button__sorting--status-clicked")
+        let button_name = event.target.name
+        if (button_name == "price"){
+            let arrow = document.getElementById("sorting--order-price")
+
+            if (event.target.classList.contains("button__sorting--status-clicked")){
+                if (arrow.classList.contains("down")){
+                    arrow.className = "arrow up"
+                    sorting_info.price = "asc"
+                }
+                else {
+                    event.target.classList.remove("button__sorting--status-clicked")
+                    arrow.style.display = "none"
+                    sorting_info.price = "none"
+                }
+            }
+            else {
+                arrow.style.display = "inline-block"
+                event.target.classList.add("button__sorting--status-clicked")
+                arrow.className = "arrow down"
+                sorting_info.price = "desc"
+            }
         }
-        else {
-            event.target.classList.add("button__sorting--status-clicked")
+        else if (button_name == "date"){
+            if (event.target.classList.contains("button__sorting--status-clicked")){
+                event.target.classList.remove("button__sorting--status-clicked")
+                sorting_info.price = "none"
+            }
+            else {
+                event.target.classList.add("button__sorting--status-clicked")
+                sorting_info.price = "desc"
+            }
         }
+        else if (button_name == "sold_count"){
+            if (event.target.classList.contains("button__sorting--status-clicked")){
+                event.target.classList.remove("button__sorting--status-clicked")
+                sorting_info.sold_count = "none"
+            }
+            else {
+                event.target.classList.add("button__sorting--status-clicked")
+                sorting_info.sold_count = "desc"
+            }
+        }
+
+        get_products()
     }
 
     function change_hearoheader_background() {
@@ -195,24 +242,26 @@
     }
 
     function get_products(){
+        page_number = 1
         let xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == XMLHttpRequest.DONE){
                 let json_response = JSON.parse(xhttp.responseText)
                 for(let i = 0; i < json_response.length; i++){
-                    let new_product = new Product(json_response[i].stuff_name, json_response[i].category, json_response[i].price,
+                    let new_product = new Product(json_response[i].stuff_name, json_response[i].category_name, json_response[i].price,
                         json_response[i].stock, json_response[i].sold_count, json_response[i].creation_date)
 
                         products.push(new_product)
                 }
+                draw_products()
             }
-            draw_products()
         }
 
         xhttp.open("POST", "http://127.0.0.1:8000/stuff-list", true)
         xhttp.setRequestHeader('Content-Type', "application/json")
         xhttp.send(JSON.stringify(sorting_info))
+
         // for(let i = 0; i < 40; i ++){
         //     let new_product = new Product(product_json.img_src, product_json.product_name, product_json.product_class, product_json.product_price)
         //     products.push(new_product)
@@ -222,7 +271,7 @@
     function draw_products(){
         product_container.innerHTML = ""
         for(let i = (page_number - 1) * 15; i < Math.min(page_number * 15, products.length); i ++){
-            product_container.appendChild(create_product(products[i].img_src, products[i].product_name, products[i].product_class, products[i].product_price))
+            product_container.appendChild(create_product(products[i].img_src, products[i].stuff_name, products[i].category_name, products[i].price))
         }
         draw_page_info(products.length)
     }
@@ -292,5 +341,10 @@
     document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
         let url = ""
         window.location.href = url
+    })
+
+    document.getElementsByClassName("search__button")[0].addEventListener('click', () => {
+        sorting_info.search_box = document.getElementsByClassName("search__input")[0].value
+        get_products()
     })
 })()
