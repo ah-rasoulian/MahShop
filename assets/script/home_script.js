@@ -1,6 +1,6 @@
 "use strict";
 
-
+create_product
 (function main() {
     let hearoheader = document.getElementsByClassName("container__hearoheader")[0];
     let slider_left = document.getElementById("slider_left");
