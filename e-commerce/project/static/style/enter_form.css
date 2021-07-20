@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+* {
+    box-sizing: border-box;
+} 
+
+
+#container {
+    justify-content: center;
+} 
+
+.content {
+    max-width: 400px;
+    width: 30%;
+    min-width: 200px;
+    margin: 0 auto;
+}
+
+.content__title {
+    margin-bottom: 30px;
+}
+
+.title__text--color {
+    color: #05ECEB;
+}
+
+.title__text--allign {
+    text-align: center;
+    margin: 0;
+}
+
+
+
+
+.enterform {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+
+.enterform__element {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    z-index: 2;
+    color: white;
+}
+
+.enterform__password {
+    margin-bottom: 30px;
+    
+}
+
+.enterform__email{
+    margin-bottom: 15px ;
+}
+
+
+
+
+.enterform__input {
+    display: inline-block;
+    width: 65%;
+    border: none;
+    padding: 0%;
+    margin: 0;
+    border-radius: 7px 0px 0px 7px;
+}
+
+
+
+.enterform__label {
+    border-radius: 0px 7px 7px 0px;
+    display: inline-block;
+    margin: 0;
+    width: 35%;
+    background-color: #05ECEB;
+    padding: 0 6px;
+    text-align: center;
+    line-height: 30px;
+}
+
+
+.enterform__btn {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    background-color: orange;
+}
+
+
+.enterform__email--errorexist{
+    margin-bottom: 0px;
+}
+
+.enterform__emailerror p{
+    text-align: right;
+    color: red;
+    font-size: 10px;
+    line-height: 14px;
+    margin: 5px;
+}
+
+
+.enterform__password--errorexist{
+    margin-bottom: 0px;
+}
+
+.enterform__passerror p{
+    text-align: right;
+    color: red;
+    font-size: 10px;
+    line-height: 14px;
+    margin: 5px;
+    margin-bottom: 5px;
+}
