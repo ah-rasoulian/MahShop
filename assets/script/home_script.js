@@ -52,6 +52,7 @@
     }
 
     function get_categories(){
+        categories = []
         let xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = () => {
@@ -242,6 +243,7 @@
     }
 
     function get_products(){
+        products = []
         page_number = 1
         let xhttp = new XMLHttpRequest();
 

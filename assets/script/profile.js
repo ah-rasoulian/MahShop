@@ -215,14 +215,15 @@ function passValidation(){
     return false;
 }
 
-document.getElementsByClassName("info__profile")[0].addEventListener('click', () => {
-    document.getElementsByClassName("content")[0].style.display = "none"
-    document.getElementsByClassName("receipt__page")[0].style.display = "block"
-})
-
-document.getElementsByClassName("info__receipts")[1].addEventListener('click', () => {
+document.getElementsByClassName("info__profile")[1].addEventListener('click', () => {
     document.getElementsByClassName("receipt__page")[0].style.display = "none"
     document.getElementsByClassName("content")[0].style.display = "block"
+})
+
+document.getElementsByClassName("info__receipts")[0].addEventListener('click', () => {
+    document.getElementsByClassName("content")[0].style.display = "none"
+    document.getElementsByClassName("receipt__page")[0].style.display = "block"
+    get_receipts()
 })
 
 document.getElementsByClassName("menu__item--type-products")[0].addEventListener('click', () => {
@@ -237,3 +238,90 @@ document.getElementsByClassName("menu__item--type-main")[0].addEventListener('cl
     let url = ""
     window.location.href = url
 })
+
+class Receipt {
+    constructor(tracing_code, stuff_name, price, address){
+        this.tracing_code = tracing_code
+        this.stuff_name = stuff_name
+        this.price = price
+        this.address = address
+    }
+}
+
+let receipts = []
+function get_receipts(){
+    receipts = []
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if(json_response.detail){
+                if(json_response.detail == "Invalid token"){
+                    console.log("Invalid token")
+                }
+                else {
+                    console.log("Authentication credentials were not provided.")
+                }
+            }
+            else {
+                for(let i = 0; i < json_response.length; i ++){
+                    let new_receipt = new Receipt(json_response[i].tracing_code, json_response[i].stuff_name,
+                        json_response[i].price, json_response[i].address)
+                    receipts.push(new_receipt)
+                }
+            }
+            draw_receipts()
+        }
+    }
+
+    xhttp.open("GET", "http://127.0.0.1:8000/receipts", true)
+    xhttp.setRequestHeader("Authorization", "Token 8652d0bfd90fe03f3168ed22d38e3bf2b77eaba6")
+    xhttp.send()
+}
+
+function draw_receipts(){
+    let receipt_container = document.getElementById("receipts")
+    receipt_container.innerHTML = ""
+    receipt_container.appendChild(create_reciept('کد پیگیری', 'نام کالا', 'قیمت', 'آدرس'))
+
+    for(let i = 0; i < receipts.length; i ++){
+        receipt_container.appendChild(create_reciept(receipts[i].tracing_code, receipts[i].stuff_name,
+            receipts[i].price, receipts[i].address))
+    }
+}
+
+function create_reciept(tracing_code, stuff_name, price, address){
+    let receipt = document.createElement('div')
+    receipt.className = "receipts__item receipts__grid--display-grid grid"
+
+    let space = document.createElement('div')
+    space.className = 'grid__item'
+    receipt.appendChild(space)
+
+    let r_address = document.createElement('div')
+    r_address.className = 'receipts__item__field grid__item'
+    r_address.innerHTML = address
+    receipt.appendChild(r_address)
+
+    let r_price = document.createElement('div')
+    r_price.className = 'receipts__item__field grid__item'
+    r_price.innerHTML = price
+    receipt.appendChild(r_price)
+
+    let r_name = document.createElement('div')
+    r_name.className = 'receipts__item__field grid__item'
+    r_name.innerHTML = stuff_name
+    receipt.appendChild(r_name)
+
+    let r_code = document.createElement('div')
+    r_code.className = 'receipts__item__field grid__item'
+    r_code.innerHTML = tracing_code
+    receipt.appendChild(r_code)
+
+    let space2 = document.createElement('div')
+    space2.className = 'grid__item'
+    receipt.appendChild(space2)
+
+    return receipt
+}
