@@ -1,3 +1,4 @@
+from django.core.serializers import serialize
 from django.db.models import fields
 from rest_framework import serializers
 from .models import category, receipt, stuff, user
@@ -47,3 +48,9 @@ class PurchaseSerializer(serializers.Serializer):
 
 class IncreaseSerializer(serializers.Serializer):
     charge = serializers.IntegerField(default=True)
+
+
+class us(serializers.ModelSerializer):
+    class Meta:
+        model = user
+        fields ='__all__'

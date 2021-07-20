@@ -1,4 +1,5 @@
 from re import X
+from django.core.serializers import serialize
 from django.db.models.query import QuerySet
 
 from rest_framework import serializers
@@ -14,10 +15,9 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import CategorySerializer, PurchaseSerializer, StuffListSerializer, StuffSerializer, UserSerializer, ReceiptSerializer
+from .serializers import CategorySerializer, PurchaseSerializer, StuffListSerializer, StuffSerializer, UserSerializer, ReceiptSerializer, us
 from rest_framework.authtoken.models import Token
 import ast
-
 
 @api_view(['POST'])
 def register(request):
@@ -207,3 +207,12 @@ def increase_charge(request):
     request.user.charge = request.user.charge + serializer.initial_data["charge"]
     request.user.save()
     return Response("successfull")
+
+
+
+@api_view(["GET"])
+@permission_classes((IsAuthenticated,))
+def user_info(request):
+    serializer = us(request.user)
+    print(serializer.data)
+    return Response(serializer.data)
