@@ -48,7 +48,7 @@
         reset_slider_interval();
 
         get_categories();
-        get_products();
+        // get_products();
     }
 
     function get_categories(){
@@ -123,6 +123,41 @@
         for (let i = 0; i < sorting_buttons.length; i++){
             sorting_buttons.item(i).addEventListener('click', change_sorting_button)
         }
+
+        athenticate()
+    }
+
+    function athenticate(){
+        let xhttp = new XMLHttpRequest()
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                let json_response = JSON.parse(xhttp.responseText)
+                if (json_response.detail){
+                    if (json_response.detail == 'Invalid toke.'){
+                        console.log('Invalid token')
+                    }
+                }
+                else {
+                    show_name(json_response.first_name)
+                }
+            }
+        }
+
+        xhttp.open("GET", "http://127.0.0.1:8000/user-info", true)
+        xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+        xhttp.send()
+    }
+
+    function show_name(name){
+        let button = document.getElementsByClassName('login__button')[1]
+        button.innerHTML = name
+        let arrow = document.createElement('i')
+        arrow.className = 'arrow down'
+        button.appendChild(arrow)
+
+        document.getElementsByClassName("login__button--loggedin-no")[0].style.display = "none"
+        document.getElementsByClassName("login__button--loggedin-yes")[0].style.display = "block"
     }
 
     function change_sorting_button(event){
