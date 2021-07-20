@@ -238,6 +238,9 @@
     function get_products(){
         products = []
         page_number = 1
+
+        let data = {}
+        if(sorting_info.category)
         let xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = () => {
