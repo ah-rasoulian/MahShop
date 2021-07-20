@@ -33,6 +33,7 @@ class StuffListSerializer(serializers.Serializer):
     search_box = serializers.CharField(max_length=20, required=False, default="none")
     price = serializers.CharField(max_length=10, required=False, default="none")
     date = serializers.CharField(max_length=10, required=False, default="none")
+    sold_count = serializers.CharField(max_length=10, required=False, default="desc")
     lbp = serializers.IntegerField(required=False, default=-1)
     ubp = serializers.IntegerField(required=False, default=-1)
     page = serializers.IntegerField(required=False, default=1)
