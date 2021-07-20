@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/
+    ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'style/basic_styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/arrow_styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/homepage_styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/enter_form.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'style/modal.css' %}" rel="stylesheet" type="text/css">
+    <title>My project</title>
+</head>
+<body>
+
+    <div id="menu" class="block--vertically-middle">
+        <span class="menu__item menu__item--size-large menu__item--color-turquoise">فروشگاه مهشاپ </span>
+        <span class="menu__item menu__item--type-main">صفحه اول</span>
+        <span class="menu__item">تماس با ما</span>
+        <span class="menu__item">پشتیبانی</span>
+        <span class="menu__item menu__item--type-products">محصولات</span>
+
+        <div class="menu__item dropdown">
+            <button class="button login__button login__button--loggedin-no">ورود/ثبت نام</button>
+            
+            <div class="login__button--loggedin-yes">
+                <button class="button login__button">امیرحسین <i class="arrow down"></i></button>
+                <div class="dropdown__content">
+                    <a>پروفایل</a>
+                    <a>خروج از حساب</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+        <div class="content">
+            <div class="content__title title">
+                <h4 class="title__text--color title__text--allign"> فروشگاه - ورود</h4>
+            </div>
+            <form action="" name="form" class="content__title enterform" id="formid">
+                <div class="enterform__element  enterform__email">
+                    <input name="email" class="enterform__input " type="email" placeholder="ایمیل خود را وارد کنید"  id="email">
+                    <label class="enterform__label" for="email">ایمیل</label>
+                </div>
+                <div class="enterform__emailerror">
+                </div>
+                <div class="enterform__element enterform__password">
+                    <input name="password" class="enterform__input " type="password" minlength="6" placeholder="رمز عبور خود را وارد کنید " id="pass" >
+                    <label class="enterform__label" for="pass">رمز عبور</label>
+                </div>
+                <div class="enterform__passerror">
+                </div>
+                <div class="enterform__element">
+                    <button class="enterform__btn" style="margin-right: auto;" id="register__button">ثبت نام</button>
+                    <button class="enterform__btn" form="formid" type="submit" >ورود</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="footer">
+        <p>تمامی حقوق برای توسعه‌دهندگان، امیرحسین رسولیان و محمدامین رحیمی، محفوظ است</p>
+    </div>
+    <!-- <script src="script.js"></script> -->
+    <script src="{% static 'script/enter_form.js'%}" defer></script>
+</body>
+</html>

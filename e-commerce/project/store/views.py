@@ -222,3 +222,18 @@ def user_info(request):
 @api_view(["GET"])
 def main_page(request):
     return render(request, "home.html")
+
+@api_view(["GET"])
+def enter_form(request):
+    return render(request, "enter_form.html")
+
+
+@api_view(["GET"])
+def register_form(request):
+    return render(request, "register_form.html")
+
+
+@api_view(["GET"])
+@permission_classes((IsAuthenticated,))
+def profile(request):
+    return render(request, "profile.html")
