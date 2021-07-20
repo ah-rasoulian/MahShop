@@ -181,12 +181,12 @@ def purchase(request):
     if serializer.is_valid():
         stf = stuff.objects.get(stuff_name=serializer.initial_data["stuff_name"])
         usr = request.user
-        if serializer.initial_data["items"] < stf.stock:
-            if serializer.initial_data["items"]*stf.price < usr.charge:
-                usr.charge = usr.charge - (serializer.initial_data["items"]*stf.price)
+        if int(serializer.initial_data["items"]) < stf.stock:
+            if int(serializer.initial_data["items"])*stf.price < usr.charge:
+                usr.charge = usr.charge - (int(serializer.initial_data["items"])*stf.price)
                 usr.save()
-                stf.stock = stf.stock - serializer.initial_data["items"]
-                stf.sold_count = stf.sold_count + serializer.initial_data["items"]
+                stf.stock = stf.stock - int(serializer.initial_data["items"])
+                stf.sold_count = stf.sold_count + int(serializer.initial_data["items"])
                 stf.save()
                 return Response("succesfful purchase")
             else:

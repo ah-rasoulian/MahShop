@@ -85,11 +85,13 @@ function editValidation(event){
             if (xhttp.readyState == XMLHttpRequest.DONE){
                 let json_response = JSON.parse(xhttp.responseText)
                 if(json_response == "edited succesfully"){
+                    localStorage.removeItem('token')
                     renderModal(true, "تغییرات با موفقیت اعمال شد.")
 
-                    localStorage.removeItem('token')
-                    let url = "http://127.0.0.1:8000/enter"
-                    window.location.href = url
+                    setTimeout(() => {
+                        let url = "http://127.0.0.1:8000/enter"
+                        window.location.href = url
+                    }, 1000);
                 }
                 else {
                     renderModal(false, "شما مجاز به اعمال تغییرات نیستید.")
@@ -264,6 +266,7 @@ function get_receipts(){
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == XMLHttpRequest.DONE){
             let json_response = JSON.parse(xhttp.responseText)
+            console.log(xhttp.responseText)
             if(json_response.detail){
                 if(json_response.detail == "Invalid token"){
                     console.log("Invalid token")

@@ -11,6 +11,8 @@
     let backgrounds_src = ["url('http://127.0.0.1:8000/static/img/bg1.jpg')", "url('http://127.0.0.1:8000/static/img/bg2.jpg')", "url('http://127.0.0.1:8000/static/img/bg3.jpg')"];
     let slider_interval;
 
+    let is_authenticated = false;
+
     let sorting_info = {
         category_name: [],
         sold_count: "desc",
@@ -32,6 +34,7 @@
     }
 
     let products = []
+    let buy_product;
     let categories = []
 
     let page_number = 1;
@@ -132,6 +135,7 @@
                     }
                 }
                 else {
+                    is_authenticated = true
                     show_name(json_response.first_name)
                 }
             }
@@ -265,9 +269,165 @@
         let p_button = document.createElement("button")
         p_button.className = "button--size-small"
         p_button.innerHTML = "خرید محصول"
+        p_button.name = product_name
+        p_button.addEventListener('click', buy_handler)
         price_container.appendChild(p_button)
         
         return product
+    }
+
+    function buy_handler(event){
+        if (is_authenticated){
+            renderModal(1, event.target.name)
+        }
+        else {
+            renderModal(2, event.target.target)
+        }
+        
+    }
+
+    function removeModal(){
+        // find the modal and remove if it exists
+        let modal = document.querySelector('.modal')
+        if (modal) {
+          modal.remove()
+        }
+    }
+    
+    function renderModal(status, p_name){
+        let status_message;
+        if (status == 1){
+            status_message = "خرید محصول"
+        }
+        else if (status == 2){
+            status_message = "ابتدا وارد شوید"
+        }
+        else {
+            status_message = p_name
+        }
+        
+        let product = products.find(p => {
+            return p.stuff_name === p_name
+        })
+
+        // create the background modal div
+        let modal = document.createElement('div')
+        modal.classList.add('modal')
+    
+        // create the inner modal div with appended argument
+        let modal_content = document.createElement('div')
+        modal_content.classList.add('modal__content')
+    
+        let exit_button = document.createElement('button')
+        exit_button.classList.add("modal_content--type-exit")
+        exit_button.addEventListener('click', removeModal)
+        exit_button.innerHTML = "X"
+        modal_content.appendChild(exit_button)
+    
+        let header = document.createElement('h1')
+        header.classList.add('modal__content--type-header')
+        header.innerHTML = status_message
+        modal_content.appendChild(header)
+        
+        if (status == 1){
+            let content_container = document.createElement('div')
+            content_container.classList.add('modal__content--type-content')
+            modal_content.appendChild(content_container)
+    
+            let name = document.createElement('p')
+            name.innerHTML = "نام محصول : "
+            name.innerHTML += product.stuff_name
+            content_container.appendChild(name)
+    
+            let stock = document.createElement('p')
+            stock.innerHTML = "تعداد موجود : "
+            stock.innerHTML += product.stock
+            content_container.appendChild(stock)
+    
+            let price = document.createElement('p')
+            price.innerHTML = "قیمت واحد : "
+            price.innerHTML += product.price
+            content_container.appendChild(price)
+    
+            let number_to_buy = document.createElement('div')
+            number_to_buy.classList.add('number--to-buy')
+    
+            let count = document.createElement('input')
+            count.id = "product_counts"
+            count.type = "number"
+            count.step = 1
+            count.min = 1
+            count.max = product.stock
+    
+            let count_label = document.createElement('p')
+            count_label.innerHTML = "چند تا میخواهید؟"
+    
+            number_to_buy.appendChild(count_label)
+            number_to_buy.appendChild(count)
+            content_container.appendChild(number_to_buy)
+    
+            let total_price = document.createElement('p')
+            total_price.id = "total_price"
+            content_container.appendChild(total_price)
+    
+            count.addEventListener('input', (event) => {
+                document.getElementById("total_price").innerHTML = "قیمت کل : "
+                document.getElementById("total_price").innerHTML += product.price * parseInt(event.target.value)
+            })
+    
+            let purchase_button = document.createElement('button')
+            purchase_button.className = "button--size-small"
+            purchase_button.innerHTML = "خرید"
+            buy_product = product
+            purchase_button.addEventListener('click', purchase)
+    
+            content_container.appendChild(purchase_button)
+        }
+
+        // render the modal with child on DOM
+        modal.appendChild(modal_content)
+        document.getElementById('container__contents').appendChild(modal)
+    
+        modal.addEventListener('click', event => {
+            if (event.target.className === 'modal') {
+              removeModal()
+            }
+        })
+    }
+
+    function purchase(){
+        let count = document.getElementById('product_counts').value
+
+        let data = {
+            "stuff_name": buy_product.stuff_name,
+            "items": count
+        }
+
+        let xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == XMLHttpRequest.DONE){
+                let json_response = JSON.parse(xhttp.responseText)
+                if (json_response == "succesfful purchase"){
+                    removeModal()
+                    renderModal(3, "پرداخت با موفیت انجام شد")
+                    setTimeout(() => { location.reload() }, 1000);
+                }
+                else if (json_response == "you don't have enough money"){
+                    removeModal()
+                    renderModal(3, "شما پول کافی ندارید")
+                }
+                else if (json_response == "there is not enough stuff"){
+                    removeModal()
+                    renderModal(3, "تعداد کافی از محصول وجود ندارد")
+                }
+            }
+        }
+
+        xhttp.open("POST", "http://127.0.0.1:8000/purchase", true)
+        xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+        xhttp.setRequestHeader('Content-Type', "application/json")
+        xhttp.send(JSON.stringify(data))
     }
 
     function get_products(){
