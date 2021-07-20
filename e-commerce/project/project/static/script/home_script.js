@@ -393,7 +393,9 @@
 
     document.getElementById("exit").addEventListener('click', () => {
         localStorage.removeItem('token')
-        location.reload()
+        
+        let url = "http://127.0.0.1:8000/main"
+        window.location.href = url
     })
 
     document.getElementById("profile").addEventListener('click', () => {

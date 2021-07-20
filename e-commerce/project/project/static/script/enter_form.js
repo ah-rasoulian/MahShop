@@ -282,7 +282,59 @@ document.getElementsByClassName("menu__item--type-main")[0].addEventListener('cl
     window.location.href = url
 })
 
+document.getElementsByClassName("login__button--loggedin-no")[0].addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/enter"
+    window.location.href = url
+})
+
+document.getElementById("exit").addEventListener('click', () => {
+    localStorage.removeItem('token')
+    
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
+
+document.getElementById("profile").addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/profile"
+    window.location.href = url
+})
+
 document.getElementById("register__button").addEventListener('click', () => {
     let url = "http://127.0.0.1:8000/register-form"
     window.location.href = url
 })
+
+function athenticate(){
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if (json_response.detail){
+                if (json_response.detail == 'Invalid toke.'){
+                    console.log('Invalid token')
+                }
+            }
+            else {
+                show_name(json_response.first_name)
+            }
+        }
+    }
+
+    xhttp.open("GET", "http://127.0.0.1:8000/user-info", true)
+    xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+    xhttp.send()
+}
+
+function show_name(name){
+    let button = document.getElementsByClassName('login__button')[1]
+    button.innerHTML = name
+    let arrow = document.createElement('i')
+    arrow.className = 'arrow down'
+    button.appendChild(arrow)
+
+    document.getElementsByClassName("login__button--loggedin-no")[0].style.display = "none"
+    document.getElementsByClassName("login__button--loggedin-yes")[0].style.display = "block"
+}
+
+athenticate()
