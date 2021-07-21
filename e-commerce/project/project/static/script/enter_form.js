@@ -88,9 +88,11 @@ function enterValidation(event){
                     
                     console.log(localStorage.token)
                     renderModal(true, "خوش آمدید")
-                    
-                    let url = "http://127.0.0.1:8000/main"
-                    window.location.href = url
+
+                    setTimeout(() => {
+                        let url = "http://127.0.0.1:8000/main"
+                        window.location.href = url
+                    }, 1000);
                 }
                 else {
                     renderModal(false, "نام کاربری یا رمز عبور معتبر نیست")

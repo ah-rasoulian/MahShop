@@ -29,7 +29,7 @@ def register(request):
         token = Token.objects.get(user=user.objects.get(user_name=serializer.data["user_name"])).key
         data = {}
         data["token"] = token
-        return HttpResponse(data)
+        return Response(data)
     return Response("registeration failed")
 
 
@@ -180,12 +180,12 @@ def purchase(request):
     if serializer.is_valid():
         stf = stuff.objects.get(stuff_name=serializer.initial_data["stuff_name"])
         usr = request.user
-        if serializer.initial_data["items"] < stf.stock:
-            if serializer.initial_data["items"]*stf.price < usr.charge:
-                usr.charge = usr.charge - (serializer.initial_data["items"]*stf.price)
+        if int(serializer.initial_data["items"]) <= stf.stock:
+            if int(serializer.initial_data["items"])*stf.price <= usr.charge:
+                usr.charge = usr.charge - (int(serializer.initial_data["items"])*stf.price)
                 usr.save()
-                stf.stock = stf.stock - serializer.initial_data["items"]
-                stf.sold_count = stf.sold_count + serializer.initial_data["items"]
+                stf.stock = stf.stock - int(serializer.initial_data["items"])
+                stf.sold_count = stf.sold_count + int(serializer.initial_data["items"])
                 stf.save()
                 tracing_code1 = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
                 rec = receipt(tracing_code=tracing_code1, stuff_name=serializer.initial_data["stuff_name"], 
@@ -213,7 +213,7 @@ def increase_charge(request):
 @permission_classes((IsAuthenticated,))
 def increase_charge(request):
     serializer = PurchaseSerializer(data=request.data)
-    request.user.charge = request.user.charge + serializer.initial_data["charge"]
+    request.user.charge = request.user.charge + int(serializer.initial_data["charge"])
     request.user.save()
     return Response("successfull")
 
@@ -243,10 +243,10 @@ def register_form(request):
 
 
 @api_view(["GET"])
-@permission_classes((IsAuthenticated,))
+# @permission_classes((IsAuthenticated,))
 def profile(request):
-    if request.user.is_admin:
-        return render(request, "admin_profile")
+    # if request.user.is_admin:
+    #     return render(request, "admin_profile")
     return render(request, "profile.html")
 
 

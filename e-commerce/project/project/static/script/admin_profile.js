@@ -2,18 +2,6 @@
 
 
 // document.getElementById("formid").addEventListener("submit", editValidation)
-let users = [
-    {
-        "email": "ahr96@aut.ac.ir",
-        "pass": "a1234567"
-    },
-    {
-        "email": "ah.rasoulian@gmail.com",
-        "pass": "r1234567"
-    }
-]
-
-
 
 document.getElementsByClassName("receipt__page")[0].style.display = "none"
 document.getElementsByClassName("category_page")[0].style.display = "none"
@@ -115,7 +103,7 @@ function get_receipts(){
     }
 
     xhttp.open("GET", "http://127.0.0.1:8000/receipts", true)
-    xhttp.setRequestHeader("Authorization", "Token 8652d0bfd90fe03f3168ed22d38e3bf2b77eaba6")
+    xhttp.setRequestHeader("Authorization", "Token " + localStorage.getItem('token'))
     xhttp.send()
 }
 
@@ -212,7 +200,7 @@ function create_product(img_src, product_name, product_class, product_price) {
     return product
 }
 
-let img_src = "../assets/img/product.png"
+let img_src = "http://127.0.0.1:8000/static/img/product.png"
 let product_container = document.getElementsByClassName("container__content")[0]
 product_container.appendChild(create_product(img_src, "kala", "category", 30))
 product_container.appendChild(create_product(img_src, "kala", "category", 30))

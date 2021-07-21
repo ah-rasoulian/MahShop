@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-p, hgroup, a, span, button, input {
+p, hgroup, a, span, button, input, h1, h2, h3 {
     direction: rtl;
 }
 

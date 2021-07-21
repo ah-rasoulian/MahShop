@@ -3,7 +3,7 @@
     left: 0%;
     width: 100vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     background: rgba(0, 0, 0, 0.5);
 
     z-index: 2;
@@ -23,7 +23,7 @@
     display: grid;
     grid-template-areas: 'header exit' '_content _content';
     grid-template-columns: 94% 6%;
-    grid-template-rows: 40% 60%;
+    grid-template-rows: 40px auto;
 
     overflow: auto;
 }
@@ -38,5 +38,16 @@
 
 .modal__content--type-content {
     grid-area: _content;
-    margin-top: auto;
+    margin: 20px auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.number--to-buy {
+    gap: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+
+    margin: 20px auto;
 }
