@@ -36,7 +36,6 @@ document.getElementsByClassName("info__profile")[2].addEventListener('click', ()
 })
 
 document.getElementsByClassName("info__category")[0].addEventListener('click', () => {
-    console.log("hello")
     document.getElementsByClassName("content")[0].style.display = "none"
     document.getElementsByClassName("receipt__page")[0].style.display = "none"
     document.getElementsByClassName("category_page")[0].style.display = "block"
@@ -76,6 +75,92 @@ class Receipt {
 }
 
 let receipts = []
+let categories = []
+let is_authenticated = false;
+let user_username;
+let page_number = 1;
+
+let sorting_info = {
+    category_name: [],
+    sold_count: "desc",
+    price: "none",
+    date: "none",
+    search_box: ""
+}
+
+function get_categories(){
+    categories = []
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if(json_response.detail){
+                if(json_response.detail == "Invalid token"){
+                    console.log("invalid token")
+                }
+                else {
+                    console.log("Authentication credentials were not provided.")
+                }
+            }
+            else {
+                for(let i = 0; i < json_response.length; i++){
+                    categories.push(json_response[i].category_name)
+                }
+            }
+        }
+        draw_categories()
+    }
+
+    xhttp.open("GET", "http://127.0.0.1:8000/get-cat", true)
+    xhttp.send()
+}
+
+function draw_categories(){
+    let container = document.getElementById("categories")
+    container.innerHTML = ""
+
+    let header = document.createElement("h2")
+    header.className = "category__item categories___grid--display-grid"
+    let header_name = document.createElement('span')
+    header_name.innerHTML = "نام دسته بندی"
+
+    let header_action = document.createElement('span')
+    header_action.innerHTML = "عملیات"
+    header_action.className = "postion_left"
+    
+    header.appendChild(header_name)
+    header.appendChild(header_action)
+    container.appendChild(header)
+
+    for(let i = 0; i < categories.length; i++){
+        let item = document.createElement('div')
+        item.className = "category__item categories___grid--display-grid"
+
+        let action = document.createElement('div')
+        action.className = "position_left"
+
+        let delete_button = document.createElement('span')
+        delete_button.name = categories[i]
+        action.appendChild(delete_button)
+
+        let edit_button = document.createElement('span')
+        edit_button.name = categories[i]
+        action.appendChild(edit_button)
+
+        let class_name = document.createElement('p')
+        class_name.innerHTML = categories[i]
+
+        item.appendChild(action)
+        item.appendChild(class_name)
+        container.appendChild(item)
+    }
+}
+
+get_categories()
+
+let product_container = document.getElementsByClassName("container__contents")[0]
+
 function get_receipts(){
     receipts = []
     let xhttp = new XMLHttpRequest()
@@ -159,10 +244,6 @@ function create_reciept(tracing_code, stuff_name, price, address, first_name){
     return receipt
 }
 
-
-
-
-
 function create_product(img_src, product_name, product_class, product_price) {
     let product = document.createElement("div")
     product.className = "container__box product"
@@ -194,20 +275,167 @@ function create_product(img_src, product_name, product_class, product_price) {
 
     let p_button = document.createElement("button")
     p_button.className = "button--size-small"
-    p_button.innerHTML = "خرید محصول"
+    p_button.innerHTML = "ویرایش محصول"
+    p_button.name = product_name
+    p_button.addEventListener('click', edit_handler)
     price_container.appendChild(p_button)
     
     return product
 }
 
-let img_src = "http://127.0.0.1:8000/static/img/product.png"
-let product_container = document.getElementsByClassName("container__content")[0]
-product_container.appendChild(create_product(img_src, "kala", "category", 30))
-product_container.appendChild(create_product(img_src, "kala", "category", 30))
-product_container.appendChild(create_product(img_src, "kala", "category", 30))
-product_container.appendChild(create_product(img_src, "kala", "category", 30))
-product_container.appendChild(create_product(img_src, "kala", "category", 30))
+function athenticate(){
+    let xhttp = new XMLHttpRequest()
 
-console.log("dfsdjk")
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if (json_response.detail){
+                if (json_response.detail == 'Invalid token.'){
+                    console.log('Invalid token')
+                }
+            }
+            else {
+                user_username = json_response.user_name
+                is_authenticated = true
+                show_info(json_response.first_name)
+            }
+        }
+    }
 
+    xhttp.open("GET", "http://127.0.0.1:8000/user-info", true)
+    xhttp.setRequestHeader("Authorization", "Token "+ localStorage.getItem('token'))
+    xhttp.send()
+}
 
+function show_info(name){
+    let button = document.getElementsByClassName('login__button')[1]
+    button.innerHTML = name
+    let arrow = document.createElement('i')
+    arrow.className = 'arrow down'
+    button.appendChild(arrow)
+
+    document.getElementsByClassName("login__button--loggedin-no")[0].style.display = "none"
+    document.getElementsByClassName("login__button--loggedin-yes")[0].style.display = "block"
+}
+
+athenticate()
+
+class Product {
+    constructor(stuff_name, category_name, price, stock, sold_count, creation_date){
+        this.img_src = 'http://127.0.0.1:8000/static/img/product.png'
+        this.stuff_name = stuff_name
+        this.category_name = category_name
+        this.price = price
+        this.stock = stock
+        this.sold_count = sold_count
+        this.creation_date = creation_date
+    }
+}
+
+let products = []
+
+function get_products(){
+    products = []
+    page_number = 1
+
+    let data = {}
+    if(sorting_info.category_name.length > 0){
+        data.category_name = sorting_info.category_name
+    }
+    if (sorting_info.search_box != ""){
+        data.search_box = sorting_info.search_box
+    }
+    data.sold_count = sorting_info.sold_count
+    data.price = sorting_info.price
+    data.date = sorting_info.date
+    
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            for(let i = 0; i < json_response.length; i++){
+                let new_product = new Product(json_response[i].stuff_name, json_response[i].category_name, json_response[i].price,
+                    json_response[i].stock, json_response[i].sold_count, json_response[i].creation_date)
+
+                    products.push(new_product)
+            }
+            draw_products()
+        }
+    }
+
+    xhttp.open("POST", "http://127.0.0.1:8000/stuff-list", true)
+    xhttp.setRequestHeader('Content-Type', "application/json")
+    xhttp.send(JSON.stringify(data))
+}
+
+function draw_products(){
+    product_container.innerHTML = ""
+    for(let i = (page_number - 1) * 15; i < Math.min(page_number * 15, products.length); i ++){
+        product_container.appendChild(create_product(products[i].img_src, products[i].stuff_name, products[i].category_name, products[i].price))
+    }
+    draw_page_info(products.length)
+}
+function draw_page_info(number_of_products){
+    let number_of_pages = Math.floor(number_of_products / 15) + 1
+
+    let page_info_container = document.getElementsByClassName("page__number__info")[0]
+    if (page_info_container == undefined){
+        page_info_container = document.createElement("div")
+        page_info_container.className = "page__number__info"
+    }
+    page_info_container.innerHTML = ""
+    document.getElementsByTagName("body")[0].insertBefore(page_info_container, document.getElementById("footer"))
+    
+    let previous_page_button = document.createElement("button")
+    previous_page_button.className = "page__number"
+    previous_page_button.innerHTML = "صفحه قبل"
+    previous_page_button.addEventListener("click", page_handler)
+    page_info_container.appendChild(previous_page_button)
+
+    for(let i = 1; i <= number_of_pages; i ++){
+        let page_button = document.createElement("button")
+        page_button.className = "page__number"
+        if (page_number == i){
+            page_button.className += " page__number__current"
+        }
+        page_button.innerHTML = i
+        page_button.addEventListener("click", page_handler)
+        page_info_container.appendChild(page_button)
+    }
+
+    let next_page_button = document.createElement("button")
+    next_page_button.className = "page__number"
+    next_page_button.innerHTML = "صفحه بعد"
+    next_page_button.addEventListener("click", page_handler)
+    page_info_container.appendChild(next_page_button) 
+
+}
+
+async function page_handler(event){
+    event.preventDefault()
+    let target_text = event.target.innerHTML
+    let number_of_pages = Math.floor(products.length / 15) + 1
+
+    if (target_text == "صفحه قبل"){
+        if(page_number > 1){
+            page_number -= 1
+        }
+    }
+    else if (target_text == "صفحه بعد"){
+        if(page_number < number_of_pages){
+            page_number += 1
+        }
+    }
+    else {
+        page_number = target_text
+    }
+
+    draw_products()
+}
+
+get_products()
+
+function edit_handler(event){
+
+}

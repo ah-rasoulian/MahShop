@@ -475,11 +475,6 @@
         xhttp.open("POST", "http://127.0.0.1:8000/stuff-list", true)
         xhttp.setRequestHeader('Content-Type', "application/json")
         xhttp.send(JSON.stringify(data))
-
-        // for(let i = 0; i < 40; i ++){
-        //     let new_product = new Product(product_json.img_src, product_json.product_name, product_json.product_class, product_json.product_price)
-        //     products.push(new_product)
-        // }
     }
 
     function draw_products(){
@@ -573,7 +568,7 @@
     document.getElementById("profile").addEventListener('click', () => {
         let url;
         if (is_admin){
-            url = "http://127.0.0.1:8000/admin_profile"
+            url = "http://127.0.0.1:8000/admin-profile"
         }
         else {
             url = "http://127.0.0.1:8000/profile"
