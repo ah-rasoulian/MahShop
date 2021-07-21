@@ -88,11 +88,12 @@ def update_category(request, pk):
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated,))
 def delete_category(request):
+    print("response\n\n", request.data)
     if request.user.is_admin:
         serializer = CategorySerializer(data=request.data)
         cat = category.objects.get(category_name=serializer.initial_data["category_name"])
         cat.delete()
-        return Response("category update")
+        return Response("category deleted")
     return Response("you don't have premission")
 
 

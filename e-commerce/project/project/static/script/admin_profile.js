@@ -133,12 +133,14 @@ function draw_categories(){
         delete_button.innerHTML = "حذف دسته بندی"
         delete_button.className = "menu__item"
         delete_button.name = categories[i]
+        delete_button.addEventListener('click', delete_category)
         item.appendChild(delete_button)
 
         let edit_button = document.createElement('span')
         edit_button.innerHTML = "ویرایش دسته بندی"
         edit_button.className = "menu__item"
         edit_button.name = categories[i]
+        edit_button.addEventListener('click', edit_category_handler)
         item.appendChild(edit_button)
 
         let class_name = document.createElement('span')
@@ -148,6 +150,307 @@ function draw_categories(){
         item.appendChild(class_name)
         container.appendChild(item)
     }
+}
+
+function edit_category_handler(event){
+    if (is_authenticated){
+        renderModal_edit_category(1, event.target.name)
+    }
+    else {
+        renderModal_edit_category(2, event.target.name)
+    }
+}
+let original_category_name;
+
+function renderModal_edit_category(status, p_name){
+    let status_message;
+    if (status == 1){
+        status_message = "تغییر دسته بندی"
+    }
+    else if (status == 2){
+        status_message = "ابتدا وارد شوید"
+    }
+    else {
+        status_message = p_name
+    }
+
+    // create the background modal div
+    let modal = document.createElement('div')
+    modal.classList.add('modal')
+
+    // create the inner modal div with appended argument
+    let modal_content = document.createElement('div')
+    modal_content.classList.add('modal__content')
+
+    let exit_button = document.createElement('button')
+    exit_button.classList.add("modal_content--type-exit")
+    exit_button.addEventListener('click', removeModal)
+    exit_button.innerHTML = "X"
+    modal_content.appendChild(exit_button)
+
+    let header = document.createElement('h1')
+    header.classList.add('modal__content--type-header')
+    header.innerHTML = status_message
+    modal_content.appendChild(header)
+    
+    if (status == 1){
+        let content_container = document.createElement('div')
+        content_container.classList.add('modal__content--type-content')
+        modal_content.appendChild(content_container)
+
+        let new_name_container = document.createElement('div')
+        new_name_container.classList.add('number--to-buy')
+
+        let new_name = document.createElement('input')
+        new_name.id = "new_category_name"
+        new_name.type = "text"
+
+        let new_name_label = document.createElement('p')
+        new_name_label.innerHTML = "نام جدید را وارد کنید."
+
+        new_name_container.appendChild(new_name_label)
+        new_name_container.appendChild(new_name)
+        content_container.appendChild(new_name_container)
+
+        let edit_button = document.createElement('button')
+        edit_button.className = "button--size-small"
+        edit_button.innerHTML = "تغییر"
+        original_category_name = p_name
+        edit_button.addEventListener('click', edit_category)
+
+        content_container.appendChild(edit_button)
+    }
+
+    // render the modal with child on DOM
+    modal.appendChild(modal_content)
+    document.body.appendChild(modal)
+
+    modal.addEventListener('click', event => {
+        if (event.target.className === 'modal') {
+          removeModal()
+        }
+    })
+}
+
+function edit_category(){
+    let data = {
+        "category_name": document.getElementById('new_category_name').value
+    }
+
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if(json_response == "you don't have permission"){
+                removeModal()
+                renderModal(false, "شما مجاز به اعمال تغییرات نیستید.")
+            }
+            else if (json_response == "category updated"){
+                removeModal()
+                renderModal(true, "دسته بندی با موفقیت حذف شد.")
+
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
+            }
+        }
+    }
+
+    xhttp.open("POST", "http://127.0.0.1:8000/update-category/" + original_category_name, true)
+    xhttp.setRequestHeader("Authorization", "Token " + localStorage.getItem('token'))
+    xhttp.setRequestHeader("Content-Type", "application/json")
+    xhttp.send(JSON.stringify(data))
+}
+
+function delete_category(event){
+    let data = {
+        "category_name": event.target.name
+    }
+
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if(json_response == "you don't have permission"){
+                renderModal(false, "شما مجاز به اعمال تغییرات نیستید.")
+            }
+            else if (json_response == "category deleted"){
+                renderModal(true, "دسته بندی با موفقیت حذف شد.")
+
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
+            }
+        }
+    }
+
+    xhttp.open("PUT", "http://127.0.0.1:8000/delete-category", true)
+    xhttp.setRequestHeader("Authorization", "Token " + localStorage.getItem('token'))
+    xhttp.setRequestHeader("Content-Type", "application/json")
+    xhttp.send(JSON.stringify(data))
+}
+
+document.getElementById("add_category").addEventListener('click', (event) => {
+    if (is_authenticated){
+        renderModal_add_category(1, event.target.name)
+    }
+    else {
+        renderModal_add_category(2, event.target.name)
+    }
+})
+
+function renderModal_add_category(status, p_name){
+    let status_message;
+    if (status == 1){
+        status_message = "اضافه کردن دسته بندی"
+    }
+    else if (status == 2){
+        status_message = "ابتدا وارد شوید"
+    }
+    else {
+        status_message = p_name
+    }
+
+    // create the background modal div
+    let modal = document.createElement('div')
+    modal.classList.add('modal')
+
+    // create the inner modal div with appended argument
+    let modal_content = document.createElement('div')
+    modal_content.classList.add('modal__content')
+
+    let exit_button = document.createElement('button')
+    exit_button.classList.add("modal_content--type-exit")
+    exit_button.addEventListener('click', removeModal)
+    exit_button.innerHTML = "X"
+    modal_content.appendChild(exit_button)
+
+    let header = document.createElement('h1')
+    header.classList.add('modal__content--type-header')
+    header.innerHTML = status_message
+    modal_content.appendChild(header)
+    
+    if (status == 1){
+        let content_container = document.createElement('div')
+        content_container.classList.add('modal__content--type-content')
+        modal_content.appendChild(content_container)
+
+        let new_name_container = document.createElement('div')
+        new_name_container.classList.add('number--to-buy')
+
+        let new_name = document.createElement('input')
+        new_name.id = "new_adding_category_name"
+        new_name.type = "text"
+
+        let new_name_label = document.createElement('p')
+        new_name_label.innerHTML = "نام جدید را وارد کنید."
+
+        new_name_container.appendChild(new_name_label)
+        new_name_container.appendChild(new_name)
+        content_container.appendChild(new_name_container)
+
+        let add_button = document.createElement('button')
+        add_button.className = "button--size-small"
+        add_button.innerHTML = "اضافه کردن"
+        add_button.addEventListener('click', add_category)
+
+        content_container.appendChild(add_button)
+    }
+
+    // render the modal with child on DOM
+    modal.appendChild(modal_content)
+    document.body.appendChild(modal)
+
+    modal.addEventListener('click', event => {
+        if (event.target.className === 'modal') {
+          removeModal()
+        }
+    })
+}
+
+function add_category(){
+    let data = {
+        "category_name": document.getElementById('new_adding_category_name').value
+    }
+
+    let xhttp = new XMLHttpRequest()
+
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == XMLHttpRequest.DONE){
+            let json_response = JSON.parse(xhttp.responseText)
+            if(json_response == "you don't have permission"){
+                removeModal()
+                renderModal(false, "شما مجاز به اعمال تغییرات نیستید.")
+            }
+            else if (json_response == "category added"){
+                removeModal()
+                renderModal(true, "دسته بندی با موفقیت اضافه شد.")
+
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000);
+            }
+        }
+    }
+
+    xhttp.open("POST", "http://127.0.0.1:8000/add-category", true)
+    xhttp.setRequestHeader("Authorization", "Token " + localStorage.getItem('token'))
+    xhttp.setRequestHeader("Content-Type", "application/json")
+    xhttp.send(JSON.stringify(data))
+}
+
+function removeModal(){
+    // find the modal and remove if it exists
+    let modal = document.querySelector('.modal')
+    if (modal) {
+      modal.remove()
+    }
+}
+
+function renderModal(status, message){
+    let status_message = ""
+    if (status){
+        status_message = "موفق"
+    }
+    else {
+        status_message = "ناموفق"
+    }
+
+    // create the background modal div
+    let modal = document.createElement('div')
+    modal.classList.add('modal')
+
+    // create the inner modal div with appended argument
+    let modal_content = document.createElement('div')
+    modal_content.classList.add('modal__content')
+
+    let exit_button = document.createElement('button')
+    exit_button.classList.add("modal_content--type-exit")
+    exit_button.addEventListener('click', removeModal)
+    exit_button.innerHTML = "X"
+    modal_content.appendChild(exit_button)
+
+    let header = document.createElement('h1')
+    header.classList.add('modal__content--type-header')
+    header.innerHTML = status_message
+    modal_content.appendChild(header)
+
+    let content = document.createElement('p')
+    content.classList.add('modal__content--type-content')
+    content.innerHTML = message
+    modal_content.appendChild(content)
+
+    // render the modal with child on DOM
+    modal.appendChild(modal_content)
+    document.body.appendChild(modal)
+
+    modal.addEventListener('click', event => {
+        if (event.target.className === 'modal') {
+          removeModal()
+        }
+    })
 }
 
 get_categories()

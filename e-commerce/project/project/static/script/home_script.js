@@ -285,7 +285,7 @@
             renderModal(1, event.target.name)
         }
         else {
-            renderModal(2, event.target.target)
+            renderModal(2, event.target.name)
         }
         
     }
