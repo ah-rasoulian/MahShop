@@ -406,7 +406,8 @@ function show_info(name, last_name, address, charge){
     document.getElementById('addr').placeholder = address
 
     document.getElementById('charge').innerHTML = charge
-    document.getElementById('user_firstname').innerHTML = name
+    document.getElementsByClassName('user_firstname')[0].innerHTML = name
+    document.getElementsByClassName('user_firstname')[1].innerHTML = name
 }
 
 athenticate()
