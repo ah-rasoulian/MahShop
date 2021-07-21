@@ -372,7 +372,15 @@
     
             count.addEventListener('input', (event) => {
                 document.getElementById("total_price").innerHTML = "قیمت کل : "
-                document.getElementById("total_price").innerHTML += product.price * parseInt(event.target.value)
+                let counts;
+                if (event.target.value == ""){
+                    counts = 0
+                }
+                else{
+                    counts = parseInt(event.target.value)
+                }
+
+                document.getElementById("total_price").innerHTML += product.price * counts
             })
     
             let purchase_button = document.createElement('button')
