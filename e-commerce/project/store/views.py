@@ -7,6 +7,8 @@ from rest_framework import permissions
 from store.models import *
 from django.shortcuts import render
 
+import string
+import random
 from django.http import *
 
 from rest_framework.renderers import JSONRenderer
@@ -184,6 +186,11 @@ def purchase(request):
                 stf.stock = stf.stock - int(serializer.initial_data["items"])
                 stf.sold_count = stf.sold_count + int(serializer.initial_data["items"])
                 stf.save()
+                tracing_code1 = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+                rec = receipt(tracing_code=tracing_code1, stuff_name=serializer.initial_data["stuff_name"], 
+                user_name=usr.user_name, first_name=usr.first_name, last_name=usr.last_name, itmes=serializer.initial_data["items"],
+                address=usr.address, creation_date="2020-05-05", state="انجام شده")
+                rec.save()
                 return Response("succesfful purchase")
             else:
                 return Response("you don't have enough money")

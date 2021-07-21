@@ -83,9 +83,9 @@ class receipt(models.Model):
     user_name = models.EmailField(max_length=240)
     itmes = models.IntegerField(default=1)
     price = models.IntegerField(default=0)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    address = models.TextField(max_length=100)
+    first_name = models.CharField(max_length=30, null=True)
+    last_name = models.CharField(max_length=30, null=True)
+    address = models.TextField(max_length=100, null=True)
     creation_date = models.DateField(auto_now_add=True)
     state_choices = [
         ("انجام شده","انجام شده"),
