@@ -22,5 +22,5 @@ urlpatterns = [
     path("enter", views.enter_form, name="enter-form"),
     path("register-form", views.register_form, name="register-form"),
     path("profile", views.profile, name="profile"),
-    path("admin_profile", views.admin_profile, name="admin_profile"),
+    path("admin-profile", views.admin_profile, name="admin-profile"),
 ]
