@@ -12,6 +12,7 @@
     let slider_interval;
 
     let is_authenticated = false;
+    let is_admin = false;
 
     let sorting_info = {
         category_name: [],
@@ -130,12 +131,15 @@
             if (xhttp.readyState == XMLHttpRequest.DONE){
                 let json_response = JSON.parse(xhttp.responseText)
                 if (json_response.detail){
-                    if (json_response.detail == 'Invalid toke.'){
+                    if (json_response.detail == 'Invalid token.'){
                         console.log('Invalid token')
                     }
                 }
                 else {
                     is_authenticated = true
+                    if(json_response.is_admin){
+                        is_admin = true
+                    }
                     show_name(json_response.first_name)
                 }
             }
@@ -567,7 +571,13 @@
     })
 
     document.getElementById("profile").addEventListener('click', () => {
-        let url = "http://127.0.0.1:8000/profile"
+        let url;
+        if (is_admin){
+            url = "http://127.0.0.1:8000/admin_profile"
+        }
+        else {
+            url = "http://127.0.0.1:8000/profile"
+        }
         window.location.href = url
     })
 })()
