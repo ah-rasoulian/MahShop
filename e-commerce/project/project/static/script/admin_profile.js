@@ -43,7 +43,6 @@ document.getElementsByClassName("info__category")[0].addEventListener('click', (
 })
 
 document.getElementsByClassName("info__category")[1].addEventListener('click', () => {
-    console.log("hello")
     document.getElementsByClassName("content")[0].style.display = "none"
     document.getElementsByClassName("receipt__page")[0].style.display = "none"
     document.getElementsByClassName("category_page")[0].style.display = "block"
@@ -65,12 +64,12 @@ document.getElementsByClassName("menu__item--type-main")[0].addEventListener('cl
 })
 
 class Receipt {
-    constructor(tracing_code, stuff_name, price, address){
+    constructor(tracing_code, stuff_name, price, address, first_name){
         this.tracing_code = tracing_code
         this.stuff_name = stuff_name
         this.price = price
         this.address = address
-        this.first_name = this.first_name
+        this.first_name = first_name
     }
 }
 
@@ -79,14 +78,6 @@ let categories = []
 let is_authenticated = false;
 let user_username;
 let page_number = 1;
-
-let sorting_info = {
-    category_name: [],
-    sold_count: "desc",
-    price: "none",
-    date: "none",
-    search_box: ""
-}
 
 function get_categories(){
     categories = []
@@ -109,6 +100,7 @@ function get_categories(){
                 }
             }
         }
+        get_products()
         draw_categories()
     }
 
@@ -137,21 +129,22 @@ function draw_categories(){
         let item = document.createElement('div')
         item.className = "category__item categories___grid--display-grid"
 
-        let action = document.createElement('div')
-        action.className = "position_left"
-
         let delete_button = document.createElement('span')
+        delete_button.innerHTML = "حذف دسته بندی"
+        delete_button.className = "menu__item"
         delete_button.name = categories[i]
-        action.appendChild(delete_button)
+        item.appendChild(delete_button)
 
         let edit_button = document.createElement('span')
+        edit_button.innerHTML = "ویرایش دسته بندی"
+        edit_button.className = "menu__item"
         edit_button.name = categories[i]
-        action.appendChild(edit_button)
+        item.appendChild(edit_button)
 
-        let class_name = document.createElement('p')
+        let class_name = document.createElement('span')
+        class_name.className = "position_right"
         class_name.innerHTML = categories[i]
 
-        item.appendChild(action)
         item.appendChild(class_name)
         container.appendChild(item)
     }
@@ -179,7 +172,7 @@ function get_receipts(){
             else {
                 for(let i = 0; i < json_response.length; i ++){
                     let new_receipt = new Receipt(json_response[i].tracing_code, json_response[i].stuff_name,
-                        json_response[i].price, json_response[i].address, json_response[i].first_name)
+                        json_response[i].price, json_response[i].address, json_response[i].first_name + " " + json_response[i].last_name)
                     receipts.push(new_receipt)
                 }
             }
@@ -335,19 +328,15 @@ class Product {
 let products = []
 
 function get_products(){
-    products = []
     page_number = 1
 
     let data = {}
-    if(sorting_info.category_name.length > 0){
-        data.category_name = sorting_info.category_name
+    data.category_name = []
+    for(let i = 0; i < categories.length; i ++){
+        data.category_name.push(categories[i])
     }
-    if (sorting_info.search_box != ""){
-        data.search_box = sorting_info.search_box
-    }
-    data.sold_count = sorting_info.sold_count
-    data.price = sorting_info.price
-    data.date = sorting_info.date
+
+    data.sold_count = "desc"
     
     let xhttp = new XMLHttpRequest();
 
@@ -433,8 +422,6 @@ async function page_handler(event){
 
     draw_products()
 }
-
-get_products()
 
 function edit_handler(event){
 
