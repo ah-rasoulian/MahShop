@@ -488,6 +488,20 @@ function get_receipts(){
     xhttp.send()
 }
 
+document.getElementById("search_trace").addEventListener('input', (event) => {
+    if (event.target.value == ""){
+        get_receipts()
+    }
+    else {
+        let new_receipts = []
+        for(let i = 0; i < receipts.length; i ++){
+            if (receipts[i].tracing_code.includes(event.target.value))
+            new_receipts.push(receipts[i])
+        }
+        draw_receipts2(new_receipts)
+    }
+})
+
 function draw_receipts(){
     let receipt_container = document.getElementById("receipts")
     receipt_container.innerHTML = ""
@@ -496,6 +510,17 @@ function draw_receipts(){
     for(let i = 0; i < receipts.length; i ++){
         receipt_container.appendChild(create_reciept(receipts[i].tracing_code, receipts[i].stuff_name,
             receipts[i].price, receipts[i].address, receipts[i].first_name))
+    }
+}
+
+function draw_receipts2(new_receipts){
+    let receipt_container = document.getElementById("receipts")
+    receipt_container.innerHTML = ""
+    receipt_container.appendChild(create_reciept('کد پیگیری', 'نام کالا', 'قیمت', 'آدرس', 'نام خریدار'))
+
+    for(let i = 0; i < receipts.length; i ++){
+        receipt_container.appendChild(create_reciept(new_receipts[i].tracing_code, new_receipts[i].stuff_name,
+            new_receipts[i].price, new_receipts[i].address, new_receipts[i].first_name))
     }
 }
 
@@ -668,6 +693,7 @@ function draw_products(){
     }
     draw_page_info(products.length)
 }
+
 function draw_page_info(number_of_products){
     let number_of_pages = Math.floor(number_of_products / 15) + 1
 
