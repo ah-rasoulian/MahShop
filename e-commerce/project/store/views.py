@@ -7,17 +7,18 @@ from rest_framework import permissions
 from store.models import *
 from django.shortcuts import render
 
-
 from django.http import *
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import CategorySerializer, PurchaseSerializer, StuffListSerializer, StuffSerializer, UserSerializer, ReceiptSerializer, us
+from .serializers import CategorySerializer, PurchaseSerializer, StuffListSerializer, StuffSerializer, UserSerializer, \
+    ReceiptSerializer, us
 from rest_framework.authtoken.models import Token
 import ast
+
 
 @api_view(['POST'])
 def register(request):
@@ -34,7 +35,6 @@ def register(request):
 
 @api_view(['POST'])
 def login(request):
-    
     serializer = UserSerializer(data=request.data)
     print(serializer.initial_data)
     print(serializer.is_valid())
@@ -42,6 +42,7 @@ def login(request):
     data = {}
     data["token"] = token
     return Response(data)
+
 
 # after editing you have to login again.
 @api_view(['POST'])
@@ -67,7 +68,6 @@ def add_category(request):
             serializer.save()
         return Response("category added")
     return Response("you don't have premission")
-
 
 
 @api_view(['POST'])
@@ -111,7 +111,7 @@ def receipts(request):
     else:
         rec = receipt.objects.filter(user_name=request.user.user_name)
         serializer = ReceiptSerializer(rec, many=True)
-        return Response(serializer.data)    
+        return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -137,7 +137,6 @@ def stuff_list(request):
     else:
         stuff_list = stuff.objects.filter(category_name__in=cat_name)
 
-    
     if filter["search_box"].value != 'none':
         stuff_list = [x for x in stuff_list if filter["search_box"].value in x.stuff_name]
     print(stuff_list)
@@ -152,11 +151,10 @@ def stuff_list(request):
     elif filter["date"].value == "desc":
         stuff_list = stuff_list.order_by("-creation_date")
 
-
     if filter["lbp"].value != -1:
-        stuff_list = [x for x in stuff_list if x.price>filter["lbp"].value]
+        stuff_list = [x for x in stuff_list if x.price > filter["lbp"].value]
     if filter["ubp"].value != -1:
-        stuff_list = [x for x in stuff_list if x.price< filter["ubp"].value]
+        stuff_list = [x for x in stuff_list if x.price < filter["ubp"].value]
 
     serializer = StuffSerializer(stuff_list, many=True)
     return Response(serializer.data)
@@ -180,8 +178,8 @@ def purchase(request):
         stf = stuff.objects.get(stuff_name=serializer.initial_data["stuff_name"])
         usr = request.user
         if int(serializer.initial_data["items"]) <= stf.stock:
-            if int(serializer.initial_data["items"])*stf.price <= usr.charge:
-                usr.charge = usr.charge - (int(serializer.initial_data["items"])*stf.price)
+            if int(serializer.initial_data["items"]) * stf.price <= usr.charge:
+                usr.charge = usr.charge - (int(serializer.initial_data["items"]) * stf.price)
                 usr.save()
                 stf.stock = stf.stock - int(serializer.initial_data["items"])
                 stf.sold_count = stf.sold_count + int(serializer.initial_data["items"])
@@ -191,8 +189,8 @@ def purchase(request):
                 return Response("you don't have enough money")
         else:
             return Response("there is not enough stuff")
-        
-    
+
+
 @api_view(["POST"])
 @permission_classes((IsAuthenticated,))
 def increase_charge(request):
@@ -200,7 +198,6 @@ def increase_charge(request):
     request.user.charge = request.user.charge + serializer.initial_data["charge"]
     request.user.save()
     return Response("successfull")
-
 
 
 @api_view(["POST"])
@@ -212,7 +209,6 @@ def increase_charge(request):
     return Response("successfull")
 
 
-
 @api_view(["GET"])
 @permission_classes((IsAuthenticated,))
 def user_info(request):
@@ -221,10 +217,10 @@ def user_info(request):
     return Response(serializer.data)
 
 
-
 @api_view(["GET"])
 def main_page(request):
     return render(request, "home.html")
+
 
 @api_view(["GET"])
 def enter_form(request):
@@ -237,10 +233,12 @@ def register_form(request):
 
 
 @api_view(["GET"])
-# @permission_classes((IsAuthenticated,))
 def profile(request):
-    # if request.user.is_admin:
-    #     return render(request, "admin_profile")
     return render(request, "profile.html")
 
 
+@api_view(["GET"])
+def admin_profile(request):
+    # if request.user.is_admin:
+    #     return render(request, "admin_profile")
+    return render(request, "admin_profile.html")
