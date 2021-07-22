@@ -79,8 +79,12 @@ def update_category(request, pk):
         cat = category.objects.get(category_name=pk)
         serializer = CategorySerializer(instance=cat, data=request.data)
         if serializer.is_valid():
-            cat.delete()
+            stuff_l = stuff.objects.filter(category_name=pk)
             serializer.save()
+            for i in stuff_l:
+                i.category_name = pk
+                i.save()
+            cat.delete()
         return Response("category updated")
     return Response("you don't have premission")
 
