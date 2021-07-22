@@ -755,3 +755,15 @@ async function page_handler(event){
 function edit_handler(event){
 
 }
+
+document.getElementsByClassName("menu__item--type-main")[0].addEventListener('click', () => {
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
+
+document.getElementById("exit").addEventListener('click', () => {
+    localStorage.removeItem('token')
+    
+    let url = "http://127.0.0.1:8000/main"
+    window.location.href = url
+})
