@@ -70,7 +70,7 @@ class category(models.Model):
 
 class stuff(models.Model):
     stuff_name = models.CharField(max_length=40, primary_key=True)
-    category_name = models.ForeignKey(category, on_delete=models.CASCADE, default="دسته بندی نشده")
+    category_name = models.ForeignKey(category, on_delete=models.SET_DEFAULT, default="دسته بندی نشده")
     price = models.IntegerField()
     stock = models.IntegerField()
     sold_count = models.IntegerField()

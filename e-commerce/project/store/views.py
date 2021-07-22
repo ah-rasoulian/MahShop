@@ -92,6 +92,8 @@ def delete_category(request):
     if request.user.is_admin:
         serializer = CategorySerializer(data=request.data)
         cat = category.objects.get(category_name=serializer.initial_data["category_name"])
+        if serializer.initial_data["category_name"]=="دسته بندی نشده":
+            return Response("you don't have premission")
         cat.delete()
         return Response("category deleted")
     return Response("you don't have premission")
